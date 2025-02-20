@@ -1,5 +1,6 @@
 package dhbw.ase.snackoverflow.domain.repositories;
 
+import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
 import dhbw.ase.snackoverflow.domain.entities.User;
 
@@ -12,6 +13,6 @@ public interface UserRepository {
     Optional<User> searchByID(int id);
     List<User> searchAll();
     void delete(int id);
-    User findByRecipe(int id);
+    User findByRecipe(Recipe recipe);
     ShoppingList getShoppingList();
 }
