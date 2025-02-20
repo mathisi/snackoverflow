@@ -14,5 +14,4 @@ public interface UserRepository {
     List<User> searchAll();
     void delete(int id);
     User findByRecipe(Recipe recipe);
-    ShoppingList getShoppingList();
 }
