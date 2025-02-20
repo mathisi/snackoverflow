@@ -1,6 +1,8 @@
 package dhbw.ase.snackoverflow.domain.usecases;
 
+import dhbw.ase.snackoverflow.domain.entities.Recipe;
+
 public interface CreateRecipe {
-    String createRecipe(String recipe);
+    Recipe createRecipe(Recipe recipe);
 
 }

@@ -1,5 +1,6 @@
 package dhbw.ase.snackoverflow.domain.repositories;
 
+import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
 import dhbw.ase.snackoverflow.domain.entities.User;
 
 import java.util.Optional;
@@ -12,5 +13,5 @@ public interface UserRepository {
     List<User> searchAll();
     void delete(int id);
     User findByRecipe(int id);
-    String getShoppingList();
+    ShoppingList getShoppingList();
 }

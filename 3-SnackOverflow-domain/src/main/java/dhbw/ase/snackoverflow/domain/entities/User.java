@@ -10,7 +10,7 @@ public class User {
     private EmailAddress email;
     private String userName;
     private String password;
-    private List<String> recipes;
+    private List<Recipe> recipes;
     // string to be replaced by recipe java
 
     private String shoppingList;
@@ -50,7 +50,7 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getRecipes() {
+    public List<Recipe> getRecipes() {
         return recipes;
     }
     public String getShoppingList() {
@@ -69,7 +69,7 @@ public class User {
                 '}';
     }
 
-    public void addRecipe(String recipe) {
+    public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);
    }
 }
