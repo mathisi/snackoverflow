@@ -12,4 +12,5 @@ public interface UserRepository {
     List<User> searchAll();
     void delete(int id);
     User findByRecipe(int id);
+    String getShoppingList();
 }

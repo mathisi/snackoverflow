@@ -13,6 +13,8 @@ public class User {
     private List<String> recipes;
     // string to be replaced by recipe java
 
+    private String shoppingList;
+    // string to be replaced by shopping list class
 
     public User(int id, EmailAddress email, String userName, String password) {
         this.id = id;
@@ -51,8 +53,23 @@ public class User {
     public List<String> getRecipes() {
         return recipes;
     }
+    public String getShoppingList() {
+        return shoppingList;
+    }
 
-   public void addRecipe(String recipe) {
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email=" + email +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", recipes=" + recipes +
+                ", shoppingList='" + shoppingList + '\'' +
+                '}';
+    }
+
+    public void addRecipe(String recipe) {
         this.recipes.add(recipe);
    }
 }
