@@ -6,8 +6,9 @@ public class Ingredient {
     private int id;
     private Metric metric;
     private String name;
+    private IngredientCategory category;
 
-    public Ingredient(int id, Metric metric, String name) {
+    public Ingredient(int id, Metric metric, String name, IngredientCategory category) {
         this.id = id;
         this.metric = metric;
         this.name = name;
@@ -35,6 +36,14 @@ public class Ingredient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public IngredientCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(IngredientCategory category) {
+        this.category = category;
     }
 
     @Override
