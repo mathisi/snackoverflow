@@ -1,10 +1,10 @@
 package dhbw.ase.snackoverflow.domain.valueobjects;
 
-public class VolumeMetric implements Metric {
+public class WeightMetric implements Metric {
     private double amount;
-    private VolumeUnit unit;
+    private WeightUnit unit;
 
-    public VolumeMetric(double amount, VolumeUnit unit) {
+    public WeightMetric(double amount, WeightUnit unit) {
         this.amount = amount;
         this.unit = unit;
     }
