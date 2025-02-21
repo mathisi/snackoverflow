@@ -1,24 +1,24 @@
 package dhbw.ase.snackoverflow.domain.entities;
 
-/**
- * Recipe
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Recipe {
     private int id;
     private String name;
     private int portions;
     private int preparationTime;
-    private Ingredient[] ingredients;
-    private ProcessStep[] processSteps;
+    private List<Ingredient> ingredients;
+    private List<ProcessStep> processSteps;
 
-    public Recipe(int id, String name, int portions, int preparationTime, Ingredient[] ingredients,
+    public Recipe(int id, String name, int portions, int preparationTime,
             ProcessStep[] processSteps) {
         this.id = id;
         this.name = name;
         this.portions = portions;
         this.preparationTime = preparationTime;
-        this.ingredients = ingredients;
-        this.processSteps = processSteps;
+        this.ingredients = new ArrayList<Ingredient>();
+        this.processSteps = new ArrayList<ProcessStep>();
     }
 
     public int getId() {
@@ -53,19 +53,19 @@ public class Recipe {
         this.preparationTime = preparationTime;
     }
 
-    public Ingredient[] getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Ingredient[] ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public ProcessStep[] getProcessSteps() {
+    public List<ProcessStep> getProcessSteps() {
         return processSteps;
     }
 
-    public void setProcessSteps(ProcessStep[] processSteps) {
+    public void setProcessSteps(List<ProcessStep> processSteps) {
         this.processSteps = processSteps;
     }
 
