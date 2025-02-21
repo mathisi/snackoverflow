@@ -1,21 +1,22 @@
 package dhbw.ase.snackoverflow.domain.entities;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProcessStep {
-    private Ingredient[] ingredients;
+    private List<Ingredient> ingredients;
     private String description;
 
-    public ProcessStep(Ingredient[] ingredients, String description) {
-        this.ingredients = ingredients;
+    public ProcessStep(String description) {
+        this.ingredients = new ArrayList<Ingredient>();
         this.description = description;
     }
 
-    public Ingredient[] getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Ingredient[] ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -30,7 +31,7 @@ public class ProcessStep {
     @Override
     public String toString() {
         return "ProcessStep{" +
-                "ingredients=" + Arrays.toString(ingredients) +
+                "ingredients=" + ingredients +
                 ", description='" + description + '\'' +
                 '}';
     }
