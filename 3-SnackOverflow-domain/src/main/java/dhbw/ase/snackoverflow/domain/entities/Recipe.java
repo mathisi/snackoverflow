@@ -12,7 +12,7 @@ public class Recipe {
     private List<ProcessStep> processSteps;
 
     public Recipe(int id, String name, int portions, int preparationTime,
-            ProcessStep[] processSteps) {
+            List<ProcessStep> processSteps) {
         this.id = id;
         this.name = name;
         this.portions = portions;
