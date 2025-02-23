@@ -2,6 +2,7 @@ package dhbw.ase.snackoverflow.domain.usecases;
 
 import dhbw.ase.snackoverflow.domain.entities.User;
 
-public interface ChangeUserPassword {
-    User changePassword(int userId, String password);
+public interface ChangeUserName {
+
+    User changeName(int userId, String userName);
 }
