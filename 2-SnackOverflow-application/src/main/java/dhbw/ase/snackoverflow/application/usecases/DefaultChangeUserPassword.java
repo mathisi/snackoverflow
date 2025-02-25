@@ -19,6 +19,7 @@ public class DefaultChangeUserPassword implements ChangeUserPassword {
 
         Optional<User> user = userRepository.searchByID(userId);
         if(!user.isPresent()) {
+            throw new IllegalArgumentException("User not found");
         }
         else {
             user.get().setPassword(password);
