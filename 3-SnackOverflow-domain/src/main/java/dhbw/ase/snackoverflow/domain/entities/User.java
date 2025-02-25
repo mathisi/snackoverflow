@@ -14,13 +14,13 @@ public class User {
     private List<Recipe> recipes;
     private ShoppingList shoppingList;
 
-    public User(int id, EmailAddress email, String userName, String password, ShoppingList shoppingList) {
+    public User(int id, EmailAddress email, String userName, String password) {
         this.id = id;
         this.email = email;
         this.userName = userName;
         this.password = password;
         this.recipes = new ArrayList<Recipe>();
-        this.shoppingList = shoppingList;
+        this.shoppingList = new ShoppingList(0);
 
     }
     public int getId() {

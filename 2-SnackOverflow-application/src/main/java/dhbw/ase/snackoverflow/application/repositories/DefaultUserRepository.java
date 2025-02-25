@@ -19,7 +19,7 @@ public class DefaultUserRepository implements UserRepository {
     public User create(User user) {
         if(user.getId() == 0) {
             int id = idHandler.incrementAndGet();
-            User newUser = new User(id, user.getEmail(), user.getUserName(), user.getPassword(), user.getShoppingList());
+            User newUser = new User(id, user.getEmail(), user.getUserName(), user.getPassword());
             this.users.put(id, newUser);
             return newUser;
         } else {
