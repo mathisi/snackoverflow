@@ -9,8 +9,6 @@ import java.util.List;
 public interface FindRecipe {
     List<Recipe> findByName(String name);
 
-    List<Recipe> findByIngredient(Ingredient ingredient);
-
     List<Recipe> findByIngredients(List<Ingredient> ingredients);
 
     List<Recipe> findByUser(User user);

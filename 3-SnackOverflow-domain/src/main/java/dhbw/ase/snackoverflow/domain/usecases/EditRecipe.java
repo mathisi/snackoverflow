@@ -6,11 +6,11 @@ import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import java.util.List;
 
 public interface EditRecipe {
-    void updateRecipeName(Long recipeId, String newName);
+    Recipe updateRecipeName(int recipeId, String newName);
 
-    void updateRecipeIngredients(Long recipeId, List<Ingredient> newIngredients);
+    Recipe updateRecipeIngredients(int recipeId, List<Ingredient> newIngredients);
 
-    void updateRecipeInstructions(Long recipeId, List<ProcessStep> newInstructions);
+    Recipe updateRecipeInstructions(int recipeId, List<ProcessStep> newInstructions);
 
-    void updateRecipe(Long recipeId, Recipe updatedRecipe);
+    Recipe updateRecipe(int recipeId, Recipe updatedRecipe);
 }
