@@ -19,10 +19,8 @@ public class DefaultCreateRecipe implements CreateRecipe {
     public Recipe createRecipe(Recipe recipe) {
         final User creator = recipe.getCreator();
         final User user = this.userRepository.searchByID(creator.getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Creator not found"));
         user.addRecipe(recipe);
-        // TODO: how to update user?
-        // userRepository.update(user);
         return this.recipeRepository.create(recipe);
     }
 }
