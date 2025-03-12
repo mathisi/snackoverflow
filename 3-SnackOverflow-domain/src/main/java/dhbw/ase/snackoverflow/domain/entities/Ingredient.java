@@ -12,6 +12,7 @@ public class Ingredient {
         this.id = id;
         this.metric = metric;
         this.name = name;
+        this.category = category;
     }
 
     public int getId() {
