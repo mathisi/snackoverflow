@@ -61,31 +61,39 @@ public class ConsoleAdapter {
         }
     }
     public void startLoggedIn() {
+        Map<Integer, Supplier<Boolean>> menuActions = new HashMap<>();
+        menuActions.put(1, () -> {
+            changeUserName();
+            return true;
+        });
+        menuActions.put(2, () -> {
+            changePassword();
+            return true; // Continue running
+        });
+        menuActions.put(3, () -> {
+            addItemToShoppingList();
+            return true; // Continue running
+        });
+        menuActions.put(4, () -> {
+            printShoppingList();
+            return true; // Continue running
+        });
+        menuActions.put(10, () -> {
+            logoutUser();
+            start(); // Start the main menu again
+            return false; // Stop this menu
+        });
         boolean running = true;
         while (running) {
             try {
                 printLoggedInMenu();
                 int choice = getIntInput("Choose an option: ");
-                switch (choice) {
-                    case 1:
-                        this.changeUserName();
-                        break;
-                    case 2:
-                        this.changePassword();
-                        break;
-                    case 3:
-                        this.addItemToShoppingList();
-                        break;
-                    case 4:
-                        this.printShoppingList();
-                        break;
-                    case 10:
-                        running = false;
-                        this.logoutUser();
-                        this.start();
-                        break;
-                    default:
-                        System.out.println("Invalid option. Please try again.");
+
+                if (menuActions.containsKey(choice)) {
+
+                    running = menuActions.get(choice).get();
+                } else {
+                    System.out.println("Invalid option. Please try again.");
                 }
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
