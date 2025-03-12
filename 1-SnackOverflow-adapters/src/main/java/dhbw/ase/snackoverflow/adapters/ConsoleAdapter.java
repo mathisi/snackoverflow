@@ -7,9 +7,9 @@ import dhbw.ase.snackoverflow.domain.entities.User;
 import dhbw.ase.snackoverflow.domain.usecases.*;
 import dhbw.ase.snackoverflow.domain.valueobjects.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Supplier;
+
 public class ConsoleAdapter {
     private final Scanner scanner;
     private final CreateUser createUser;
@@ -33,26 +33,27 @@ public class ConsoleAdapter {
     }
 
     public void start() {
+        Map<Integer, Supplier<Boolean>> menuActions = new HashMap<>();
+        menuActions.put(1, () -> {
+            createUser();
+            return true;
+        });
+        menuActions.put(2, () -> {
+            loginUser();
+            return false;
+        });
+        menuActions.put(3, () -> false);
+
         boolean running = true;
         while (running) {
             try {
-                // refactor to use a hashmap where the functions are stored
                 printStartupMenu();
                 int choice = getIntInput("Choose an option: ");
 
-                switch (choice) {
-                    case 1:
-                        this.createUser();
-                        break;
-                    case 2:
-                        running = false;
-                        this.loginUser();
-                        break;
-                    case 3:
-                        running = false;
-                        break;
-                    default:
-                        System.out.println("Invalid option. Please try again.");
+                if (menuActions.containsKey(choice)) {
+                    running = menuActions.get(choice).get();
+                } else {
+                    System.out.println("Invalid option. Please try again.");
                 }
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
