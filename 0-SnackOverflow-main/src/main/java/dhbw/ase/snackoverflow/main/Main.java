@@ -24,8 +24,9 @@ public class Main {
         DefaultLogoutUser logoutUser = new DefaultLogoutUser(userRepository);
         DefaultChangeUserPassword changeUserPassword = new DefaultChangeUserPassword(userRepository);
         DefaultAddItemToShoppingList addItemToShoppingList = new DefaultAddItemToShoppingList(userRepository);
+        DefaultRemoveItemFromShoppingList removeItemFromShoppingList = new DefaultRemoveItemFromShoppingList(userRepository);
 
-        ConsoleAdapter consoleAdapter = new ConsoleAdapter(createUser, changeUserName, loginUser, getActiveUser, logoutUser, changeUserPassword, addItemToShoppingList);
+        ConsoleAdapter consoleAdapter = new ConsoleAdapter(createUser, changeUserName, loginUser, getActiveUser, logoutUser, changeUserPassword, addItemToShoppingList, removeItemFromShoppingList);
 
         consoleAdapter.start();
 
