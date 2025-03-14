@@ -27,6 +27,7 @@
 # To-Dos
 - Refactoring
 - Tests
+- Rename Recipe ProcessStep to Instruction
 
 # Ideas
 - Adapter to print (pdf) recipes -> save to file

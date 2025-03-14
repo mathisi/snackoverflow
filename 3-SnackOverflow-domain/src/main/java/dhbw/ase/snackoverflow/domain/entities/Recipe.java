@@ -10,15 +10,25 @@ public class Recipe {
     private int preparationTime;
     private List<Ingredient> ingredients;
     private List<ProcessStep> processSteps;
+    private User creator;
 
     public Recipe(int id, String name, int portions, int preparationTime,
-            ProcessStep[] processSteps) {
+            List<ProcessStep> processSteps, User creator) {
         this.id = id;
         this.name = name;
         this.portions = portions;
         this.preparationTime = preparationTime;
         this.ingredients = new ArrayList<Ingredient>();
         this.processSteps = new ArrayList<ProcessStep>();
+        this.creator = creator;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     public int getId() {
