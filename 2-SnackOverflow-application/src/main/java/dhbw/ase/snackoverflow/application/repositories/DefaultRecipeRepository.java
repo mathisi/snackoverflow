@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.exceptions.RecipeNotFoundException;
 import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
 
 public class DefaultRecipeRepository implements RecipeRepository {
@@ -49,7 +50,7 @@ public class DefaultRecipeRepository implements RecipeRepository {
         if (recipeToDelete.isPresent()) {
             this.recipes.remove(id);
         } else {
-            throw new IllegalArgumentException("Recipe with id " + id + " not found");
+            throw new RecipeNotFoundException("Recipe with id " + id + " not found");
         }
     }
 

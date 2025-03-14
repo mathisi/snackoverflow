@@ -2,6 +2,7 @@ package dhbw.ase.snackoverflow.application.usecases;
 
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.usecases.ChangeUserName;
 
 import java.util.Optional;
@@ -17,8 +18,8 @@ public class DefaultChangeUserName implements ChangeUserName {
     @Override
     public User changeName(int userId, String userName) {
         Optional<User> user = userRepository.searchByID(userId);
-        if(!user.isPresent()) {
-            throw new IllegalArgumentException("User not found");
+        if (!user.isPresent()) {
+            throw new UserNotFoundException("User not found");
         }
         user.get().setUserName(userName);
 

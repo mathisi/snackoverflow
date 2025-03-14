@@ -4,6 +4,7 @@ import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.usecases.AddItemToShoppingList;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class DefaultAddItemToShoppingList implements AddItemToShoppingList {
     @Override
     public ShoppingList addItem(int userId, Ingredient ingredient) {
         Optional<User> user = userRepository.searchByID(userId);
-        if(!user.isPresent()) {
-            throw new IllegalArgumentException("User not found");
+        if (!user.isPresent()) {
+            throw new UserNotFoundException("User not found");
         }
         user.get().getShoppingList().getIngredients().add(ingredient);
         return user.get().getShoppingList();

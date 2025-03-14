@@ -6,6 +6,8 @@ import java.util.Optional;
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.exceptions.RecipeNotFoundException;
+import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
 import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
 import dhbw.ase.snackoverflow.domain.usecases.FindRecipe;
@@ -25,7 +27,7 @@ public class DefaultFindRecipe implements FindRecipe {
         List<Recipe> allRecipes = recipeRepository.searchAll();
         List<Recipe> matchingRecipes = allRecipes.stream().filter(recipe -> recipe.getName().equals(name)).toList();
         if (matchingRecipes.isEmpty()) {
-            throw new IllegalArgumentException("No recipe found with name " + name);
+            throw new RecipeNotFoundException("No recipe found with name " + name);
         }
         return matchingRecipes;
     }
@@ -36,7 +38,7 @@ public class DefaultFindRecipe implements FindRecipe {
         List<Recipe> matchingRecipes = allRecipes.stream()
                 .filter(recipe -> recipe.getIngredients().containsAll(ingredients)).toList();
         if (matchingRecipes.isEmpty()) {
-            throw new IllegalArgumentException("No recipe found with ingredients " + ingredients);
+            throw new RecipeNotFoundException("No recipe found with ingredients " + ingredients);
         }
         return matchingRecipes;
     }
@@ -45,11 +47,11 @@ public class DefaultFindRecipe implements FindRecipe {
     public List<Recipe> findByUser(User user) {
         Optional<User> foundUser = userRepository.searchByID(user.getId());
         if (!foundUser.isPresent()) {
-            throw new IllegalArgumentException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         List<Recipe> userRecipes = foundUser.get().getRecipes();
         if (userRecipes.isEmpty()) {
-            throw new IllegalArgumentException("No recipes found for user " + user);
+            throw new RecipeNotFoundException("No recipes found for user " + user);
         }
         return userRecipes;
     }
