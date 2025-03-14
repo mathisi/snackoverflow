@@ -24,7 +24,7 @@ public class DefaultRecipeRepository implements RecipeRepository {
         if (recipe.getId() == 0) {
             int id = idHandler.incrementAndGet();
             Recipe newRecipe = new Recipe(id, recipe.getName(), recipe.getPortions(), recipe.getPreparationTime(),
-                    recipe.getProcessSteps());
+                    recipe.getProcessSteps(), recipe.getCreator());
             this.recipes.put(id, newRecipe);
             return newRecipe;
         } else {
