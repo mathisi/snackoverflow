@@ -1,12 +1,14 @@
 package dhbw.ase.snackoverflow.domain.valueobjects;
 
+import dhbw.ase.snackoverflow.domain.exceptions.InvalidEmailAddressException;
+
 import java.util.Objects;
 
 public final class EmailAddress {
     private final String address;
     public EmailAddress(String address) {
         if (!isValid(address)) {
-            throw new IllegalArgumentException("Invalid email address format!");
+            throw new InvalidEmailAddressException(address);
         }
         this.address = address.toLowerCase();
     }

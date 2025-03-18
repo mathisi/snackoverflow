@@ -104,12 +104,17 @@ public class ConsoleAdapter {
 
     private void createUser(){
         System.out.println("Create a new User");
-        EmailAddress emailAddress = new EmailAddress(getStringInput("Enter email adress: "));
-        String userName = getStringInput("Enter username: ");
-        String password = getStringInput("Enter password: ");
-        User newUser = new User(0, emailAddress, userName, password);
-        User createdUser = this.createUser.createUser(newUser);
-        System.out.println("User created: " + createdUser.toString());
+        try {
+            EmailAddress emailAddress = new EmailAddress(getStringInput("Enter email adress: "));
+            String userName = getStringInput("Enter username: ");
+            String password = getStringInput("Enter password: ");
+            User newUser = new User(0, emailAddress, userName, password);
+            User createdUser = this.createUser.createUser(newUser);
+            System.out.println("User created: " + createdUser.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
     private void printStartupMenu() {
         System.out.println("\n - Welcome to Snackoverflow -");

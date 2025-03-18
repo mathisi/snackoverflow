@@ -20,20 +20,17 @@ public class DefaultLoginUser implements LoginUser {
 
     @Override
     public User login(EmailAddress email, String password) throws Exception {
-        try {
-            Optional<User> user = userRepository.searchByMail(email);
-            if(user.isPresent()) {
-                    if(Objects.equals(user.get().getPassword(), password)) {
-                        return this.userRepository.setActiveUser(user.get());
-                    }
-                    else {
-                        throw new InvalidPasswordException(email.toString());
-                    }
+
+        Optional<User> user = userRepository.searchByMail(email);
+        if (user.isPresent()) {
+            if (Objects.equals(user.get().getPassword(), password)) {
+                return this.userRepository.setActiveUser(user.get());
             } else {
-                throw new UserNotFoundException(email.toString());
+                throw new InvalidPasswordException(email.toString());
             }
-        } catch (Exception e) {
-            throw e;
+        } else {
+            throw new UserNotFoundException(email.toString());
         }
+
     }
 }

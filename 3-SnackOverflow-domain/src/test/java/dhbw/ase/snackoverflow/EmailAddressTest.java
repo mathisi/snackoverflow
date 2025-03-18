@@ -1,5 +1,6 @@
 package dhbw.ase.snackoverflow;
 
+import dhbw.ase.snackoverflow.domain.exceptions.InvalidEmailAddressException;
 import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +15,7 @@ class EmailAddressTest {
 
     @Test
     void createInvalidAddress() {
-        assertThrows(IllegalArgumentException.class, () -> new EmailAddress("test"));
+        assertThrows(InvalidEmailAddressException.class, () -> new EmailAddress("test"));
     }
 
     @Test
