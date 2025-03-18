@@ -4,6 +4,7 @@ import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 import dhbw.ase.snackoverflow.application.usecases.DefaultChangeUserName;
 import dhbw.ase.snackoverflow.application.usecases.DefaultChangeUserPassword;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,10 +31,10 @@ public class DefaultChangeUserPasswordTest {
     void changePasswordUserNotFound() {
         Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(UserNotFoundException.class, () ->
                 changeUserPassword.changePassword(1, "newPw"));
 
-        assertEquals("User not found", exception.getMessage());
+        assertEquals("User with id 1 not found", exception.getMessage());
         Mockito.verify(userRepository, Mockito.times(1)).searchByID(1);
     }
 }

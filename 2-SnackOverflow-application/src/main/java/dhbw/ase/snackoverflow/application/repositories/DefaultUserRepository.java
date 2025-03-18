@@ -2,7 +2,9 @@ package dhbw.ase.snackoverflow.application.repositories;
 
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
+import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -10,9 +12,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DefaultUserRepository implements UserRepository {
     private final Map<Integer, User> users = new HashMap<>();
     private final AtomicInteger idHandler = new AtomicInteger(0);
+    private User activeUser;
 
     public DefaultUserRepository() {
         // to-do: add sample data?
+        this.create(new User(0, new EmailAddress("til@til.de"), "Til", "1234"));
     }
 
     @Override
@@ -34,6 +38,13 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> searchByMail(EmailAddress emailAddress) {
+        return users.values().stream()
+                .filter(user -> user.getEmail().equals(emailAddress))
+                .findFirst();
+    }
+
+    @Override
     public List<User> searchAll() {
         return new ArrayList<>(users.values());
     }
@@ -47,5 +58,24 @@ public class DefaultUserRepository implements UserRepository {
     public User findByRecipe(Recipe recipe) {
         return null;
 
+    }
+
+    @Override
+    public User getActiveUser() {
+        return this.activeUser;
+    }
+
+    @Override
+    public User setActiveUser(User newActiveUser) throws UserNotFoundException {
+        if(this.users.get(newActiveUser.getId()) == null) {
+            throw new UserNotFoundException(newActiveUser.getEmail().toString());
+        }
+        this.activeUser = newActiveUser;
+        return this.activeUser;
+    }
+
+    @Override
+    public void logoutActiveUser() {
+        this.activeUser = null;
     }
 }
