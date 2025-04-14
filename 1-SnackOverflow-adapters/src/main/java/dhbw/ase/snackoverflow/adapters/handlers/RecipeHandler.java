@@ -2,9 +2,11 @@ package dhbw.ase.snackoverflow.adapters.handlers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
@@ -12,12 +14,14 @@ import dhbw.ase.snackoverflow.domain.entities.IngredientCategory;
 import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.exceptions.IngredientNotFoundException;
 import dhbw.ase.snackoverflow.domain.usecases.CreateRecipe;
 import dhbw.ase.snackoverflow.domain.usecases.FindRecipe;
 import dhbw.ase.snackoverflow.domain.usecases.GetActiveUser;
 import dhbw.ase.snackoverflow.domain.valueobjects.Metric;
-import dhbw.ase.snackoverflow.domain.valueobjects.MetricFactory;
+import dhbw.ase.snackoverflow.domain.valueobjects.VolumeMetric;
+import dhbw.ase.snackoverflow.domain.valueobjects.VolumeUnit;
+import dhbw.ase.snackoverflow.domain.valueobjects.WeightMetric;
+import dhbw.ase.snackoverflow.domain.valueobjects.WeightUnit;
 
 public class RecipeHandler {
     private final Scanner scanner;
@@ -143,17 +147,12 @@ public class RecipeHandler {
 
                 while (addingIngredients) {
                     final String ingredientName = getStringInput("Enter ingredient name: ");
-                    final String ingredientCategory = getStringInput("Enter ingredient category: ");
-                    final String ingredientMetric = getStringInput("Enter ingredient metric: ");
+                    final IngredientCategory category = this.getIngredientCategoryInput();
+                    final double amount = getIntInput("Enter amount: ");
+                    final Metric ingredientMetric = this.getMetricInput(amount);
 
-                    IngredientCategory category;
-                    try {
-                        category = IngredientCategory.valueOf(ingredientCategory.toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        throw new IngredientNotFoundException("Invalid ingredient category: " + ingredientCategory);
-                    }
                     // TODO: ingredient ID always 0?
-                    ingredients.add(new Ingredient(0, MetricFactory.fromString(ingredientMetric), ingredientName,
+                    ingredients.add(new Ingredient(0, ingredientMetric, ingredientName,
                             category));
                     addingIngredients = getIntInput("Add another ingredient? (1 = yes, 0 = no): ") == 1;
                 }
@@ -201,5 +200,74 @@ public class RecipeHandler {
     private String getStringInput(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
+    }
+
+    private IngredientCategory getIngredientCategoryInput() {
+        // Create a map of option numbers to ingredient categories
+        Map<Integer, IngredientCategory> categoryMap = new LinkedHashMap<>(); // LinkedHashMap preserves insertion order
+
+        categoryMap.put(1, IngredientCategory.FRUITS_VEGETABLES);
+        categoryMap.put(2, IngredientCategory.DAIRY);
+        categoryMap.put(3, IngredientCategory.MEAT_FISH);
+        categoryMap.put(4, IngredientCategory.BAKERY);
+        categoryMap.put(5, IngredientCategory.BEVERAGES);
+        categoryMap.put(6, IngredientCategory.DRY_GOODS);
+        categoryMap.put(7, IngredientCategory.FROZEN);
+        categoryMap.put(8, IngredientCategory.SPICES_SAUCES);
+        categoryMap.put(9, IngredientCategory.MISCELLANEOUS);
+
+        // Display options
+        System.out.println("Which category does your ingredient belong to?");
+        categoryMap.forEach((key, category) -> System.out.println(key + ": " + category));
+
+        // Get user selection
+        while (true) {
+            int choice = getIntInput("Choose an option: ");
+
+            if (categoryMap.containsKey(choice)) {
+                return categoryMap.get(choice);
+            } else {
+                System.out.println("Invalid option, try again");
+            }
+        }
+    }
+
+    private Metric getMetricInput(double amount) {
+
+        Map<Integer, Object> unitMap = new LinkedHashMap<>();
+        Map<Integer, BiFunction<Double, Object, Metric>> metricConstructorMap = new HashMap<>();
+
+        unitMap.put(1, VolumeUnit.MILLILITER);
+        unitMap.put(2, VolumeUnit.LITER);
+        unitMap.put(3, VolumeUnit.CUP);
+        unitMap.put(4, VolumeUnit.TEASPOON);
+        unitMap.put(5, VolumeUnit.TABLESPOON);
+
+        unitMap.put(6, WeightUnit.GRAM);
+        unitMap.put(7, WeightUnit.KILOGRAM);
+        unitMap.put(8, WeightUnit.POUND);
+        unitMap.put(9, WeightUnit.OUNCE);
+
+        for (int i = 1; i <= 5; i++) {
+            metricConstructorMap.put(i, (amt, unit) -> new VolumeMetric(amt, (VolumeUnit) unit));
+        }
+        for (int i = 6; i <= 9; i++) {
+            metricConstructorMap.put(i, (amt, unit) -> new WeightMetric(amt, (WeightUnit) unit));
+        }
+
+        System.out.println("Which metric does your ingredient have?");
+        unitMap.forEach((key, unit) -> System.out.println(key + ": " + unit));
+
+        while (true) {
+            int choice = getIntInput("Choose an option: ");
+
+            if (unitMap.containsKey(choice)) {
+                Object selectedUnit = unitMap.get(choice);
+                BiFunction<Double, Object, Metric> constructor = metricConstructorMap.get(choice);
+                return constructor.apply(amount, selectedUnit);
+            } else {
+                System.out.println("Invalid option, try again");
+            }
+        }
     }
 }
