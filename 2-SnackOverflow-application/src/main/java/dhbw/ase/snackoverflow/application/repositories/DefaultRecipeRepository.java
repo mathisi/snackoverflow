@@ -7,16 +7,55 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import dhbw.ase.snackoverflow.domain.entities.Ingredient;
+import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
 import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.valueobjects.VolumeMetric;
+import dhbw.ase.snackoverflow.domain.valueobjects.VolumeUnit;
+import dhbw.ase.snackoverflow.domain.valueobjects.WeightMetric;
+import dhbw.ase.snackoverflow.domain.valueobjects.WeightUnit;
 
 public class DefaultRecipeRepository implements RecipeRepository {
     private final Map<Integer, Recipe> recipes = new HashMap<>();
     private final AtomicInteger idHandler = new AtomicInteger(0);
 
     public DefaultRecipeRepository() {
-        // to-do: add sample data?
+        this.mockRepository();
+    }
+
+    private void mockRepository() {
+        this.create(new Recipe(0, "Spaghetti Bolognese", 4, 30,
+                List.of(
+                        new ProcessStep("Boil pasta", List.of(
+                                new Ingredient(0, new WeightMetric(500, WeightUnit.GRAM), "Pasta", null),
+                                new Ingredient(0, new VolumeMetric(1, VolumeUnit.TEASPOON), "Salt", null))),
+                        new ProcessStep("Cook sauce", List.of(
+                                new Ingredient(0, new VolumeMetric(200, VolumeUnit.MILLILITER), "Tomato sauce", null),
+                                new Ingredient(0, new WeightMetric(300, WeightUnit.GRAM), "Ground beef", null),
+                                new Ingredient(0, new VolumeMetric(1, VolumeUnit.PIECE), "Onion", null)))),
+                new User(1, null, "Til", null)));
+        this.create(new Recipe(0, "Caesar Salad", 2, 15,
+                List.of(
+                        new ProcessStep("Chop lettuce", List.of(
+                                new Ingredient(0, new VolumeMetric(1, VolumeUnit.PIECE), "Lettuce", null))),
+                        new ProcessStep("Mix dressing", List.of(
+                                new Ingredient(0, new VolumeMetric(2, VolumeUnit.TABLESPOON), "Olive oil", null),
+                                new Ingredient(0, new VolumeMetric(1, VolumeUnit.TABLESPOON), "Lemon juice", null),
+                                new Ingredient(0, new WeightMetric(50, WeightUnit.GRAM), "Parmesan", null))),
+                        new ProcessStep("Add croutons", List.of(
+                                new Ingredient(0, new WeightMetric(100, WeightUnit.GRAM), "Croutons", null)))),
+                new User(1, null, "Til", null)));
+        this.create(new Recipe(0, "Pancakes", 3, 20,
+                List.of(
+                        new ProcessStep("Mix batter", List.of(
+                                new Ingredient(0, new WeightMetric(200, WeightUnit.GRAM), "Flour", null),
+                                new Ingredient(0, new VolumeMetric(300, VolumeUnit.MILLILITER), "Milk", null),
+                                new Ingredient(0, new VolumeMetric(2, VolumeUnit.PIECE), "Eggs", null))),
+                        new ProcessStep("Cook on skillet", List.of(
+                                new Ingredient(0, new VolumeMetric(1, VolumeUnit.TABLESPOON), "Butter", null)))),
+                new User(2, null, "Alex", null)));
     }
 
     @Override
