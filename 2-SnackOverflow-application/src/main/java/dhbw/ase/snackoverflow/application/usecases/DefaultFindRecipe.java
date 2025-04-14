@@ -22,10 +22,13 @@ public class DefaultFindRecipe implements FindRecipe {
 
     @Override
     public List<Recipe> findByName(String name) {
+        String lowerCaseName = name.toLowerCase();
         List<Recipe> allRecipes = recipeRepository.searchAll();
-        List<Recipe> matchingRecipes = allRecipes.stream().filter(recipe -> recipe.getName().equals(name)).toList();
+        List<Recipe> matchingRecipes = allRecipes.stream()
+                .filter(recipe -> recipe.getName().toLowerCase().contains(lowerCaseName))
+                .toList();
         if (matchingRecipes.isEmpty()) {
-            throw new IllegalArgumentException("No recipe found with name " + name);
+            throw new IllegalArgumentException("No recipe found containing name " + name);
         }
         return matchingRecipes;
     }
