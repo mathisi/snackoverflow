@@ -5,7 +5,8 @@ public enum VolumeUnit {
     LITER("l"),
     CUP("cup"),
     TABLESPOON("tbsp"),
-    TEASPOON("tsp");
+    TEASPOON("tsp"),
+    PIECE("piece");
 
     private final String displayName;
 
