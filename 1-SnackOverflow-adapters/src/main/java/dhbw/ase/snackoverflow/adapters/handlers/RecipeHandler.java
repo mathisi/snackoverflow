@@ -18,6 +18,7 @@ import dhbw.ase.snackoverflow.domain.usecases.CreateRecipe;
 import dhbw.ase.snackoverflow.domain.usecases.FindRecipe;
 import dhbw.ase.snackoverflow.domain.usecases.GetActiveUser;
 import dhbw.ase.snackoverflow.domain.valueobjects.Metric;
+import dhbw.ase.snackoverflow.domain.valueobjects.MetricUnit;
 import dhbw.ase.snackoverflow.domain.valueobjects.VolumeMetric;
 import dhbw.ase.snackoverflow.domain.valueobjects.VolumeUnit;
 import dhbw.ase.snackoverflow.domain.valueobjects.WeightMetric;
@@ -234,7 +235,7 @@ public class RecipeHandler {
 
     private Metric getMetricInput(double amount) {
 
-        Map<Integer, Object> unitMap = new LinkedHashMap<>();
+        Map<Integer, MetricUnit> unitMap = new LinkedHashMap<>();
         Map<Integer, BiFunction<Double, Object, Metric>> metricConstructorMap = new HashMap<>();
 
         unitMap.put(1, VolumeUnit.MILLILITER);
@@ -242,21 +243,22 @@ public class RecipeHandler {
         unitMap.put(3, VolumeUnit.CUP);
         unitMap.put(4, VolumeUnit.TEASPOON);
         unitMap.put(5, VolumeUnit.TABLESPOON);
+        unitMap.put(6, VolumeUnit.PIECE);
 
-        unitMap.put(6, WeightUnit.GRAM);
-        unitMap.put(7, WeightUnit.KILOGRAM);
-        unitMap.put(8, WeightUnit.POUND);
-        unitMap.put(9, WeightUnit.OUNCE);
+        unitMap.put(7, WeightUnit.GRAM);
+        unitMap.put(8, WeightUnit.KILOGRAM);
+        unitMap.put(9, WeightUnit.POUND);
+        unitMap.put(10, WeightUnit.OUNCE);
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 6; i++) {
             metricConstructorMap.put(i, (amt, unit) -> new VolumeMetric(amt, (VolumeUnit) unit));
         }
-        for (int i = 6; i <= 9; i++) {
+        for (int i = 7; i <= 10; i++) {
             metricConstructorMap.put(i, (amt, unit) -> new WeightMetric(amt, (WeightUnit) unit));
         }
 
         System.out.println("Which metric does your ingredient have?");
-        unitMap.forEach((key, unit) -> System.out.println(key + ": " + unit));
+        unitMap.forEach((key, unit) -> System.out.println(key + ": " + unit.getDisplayName()));
 
         while (true) {
             int choice = getIntInput("Choose an option: ");

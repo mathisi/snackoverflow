@@ -2,6 +2,7 @@ package dhbw.ase.snackoverflow.application.usecases;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
@@ -36,8 +37,15 @@ public class DefaultFindRecipe implements FindRecipe {
     @Override
     public List<Recipe> findByIngredients(List<Ingredient> ingredients) {
         List<Recipe> allRecipes = recipeRepository.searchAll();
+        final List<String> ingredientNames = ingredients.stream()
+                .map(Ingredient::getName)
+                .toList();
         List<Recipe> matchingRecipes = allRecipes.stream()
-                .filter(recipe -> recipe.getIngredients().containsAll(ingredients)).toList();
+                .filter(recipe -> recipe.getIngredients().stream()
+                        .map(Ingredient::getName)
+                        .collect(Collectors.toList())
+                        .containsAll(ingredientNames))
+                .toList();
         if (matchingRecipes.isEmpty()) {
             throw new IllegalArgumentException("No recipe found with ingredients " + ingredients);
         }
