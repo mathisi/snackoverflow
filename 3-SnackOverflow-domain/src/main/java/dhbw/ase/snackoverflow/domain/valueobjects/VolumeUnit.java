@@ -1,6 +1,6 @@
 package dhbw.ase.snackoverflow.domain.valueobjects;
 
-public enum VolumeUnit {
+public enum VolumeUnit implements MetricUnit {
     MILLILITER("ml"),
     LITER("l"),
     CUP("cup"),
@@ -15,6 +15,11 @@ public enum VolumeUnit {
     }
 
     public String getDisplayName() {
+        return displayName;
+    }
+
+    @Override
+    public String toString() {
         return displayName;
     }
 }

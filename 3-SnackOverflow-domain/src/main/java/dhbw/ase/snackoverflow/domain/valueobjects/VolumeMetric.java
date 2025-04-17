@@ -16,6 +16,6 @@ public class VolumeMetric implements Metric {
 
     @Override
     public String getUnit() {
-        return unit.name();
+        return unit.getDisplayName();
     }
 }

@@ -1,6 +1,6 @@
 package dhbw.ase.snackoverflow.domain.valueobjects;
 
-public enum WeightUnit {
+public enum WeightUnit implements MetricUnit {
     GRAM("g"),
     KILOGRAM("kg"),
     OUNCE("oz"),
@@ -13,6 +13,11 @@ public enum WeightUnit {
     }
 
     public String getDisplayName() {
+        return displayName;
+    }
+
+    @Override
+    public String toString() {
         return displayName;
     }
 }
