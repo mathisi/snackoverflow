@@ -19,8 +19,16 @@ public class Recipe {
         this.portions = portions;
         this.preparationTime = preparationTime;
         this.ingredients = new ArrayList<Ingredient>();
-        this.processSteps = new ArrayList<ProcessStep>();
+        this.processSteps = processSteps;
         this.creator = creator;
+
+        for (ProcessStep step : processSteps) {
+            for (Ingredient ingredient : step.getIngredients()) {
+                if (!ingredients.contains(ingredient)) {
+                    ingredients.add(ingredient);
+                }
+            }
+        }
     }
 
     public User getCreator() {
