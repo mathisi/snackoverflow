@@ -15,12 +15,13 @@ import java.util.function.Supplier;
 
 public class ShoppingListHandler {
 
-
     private final Scanner scanner;
     private final GetActiveUser getActiveUser;
     private final AddItemToShoppingList addItemToShoppingList;
     private final RemoveItemFromShoppingList removeItemFromShoppingList;
-    public ShoppingListHandler(Scanner scanner,GetActiveUser getActiveUser, AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList) {
+
+    public ShoppingListHandler(Scanner scanner, GetActiveUser getActiveUser,
+            AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList) {
         this.scanner = scanner;
         this.getActiveUser = getActiveUser;
         this.addItemToShoppingList = addItemToShoppingList;
@@ -58,6 +59,7 @@ public class ShoppingListHandler {
             }
         }
     }
+
     private void printMenu() {
         System.out.println("\n - Manage ShoppingList -");
         System.out.println("1. Add Item");
@@ -65,11 +67,12 @@ public class ShoppingListHandler {
         System.out.println("3. Print");
         System.out.println("10. Back");
     }
+
     private void removeItem() {
         try {
             User activeUser = this.getActiveUser();
             System.out.println("\n - Remove Item -");
-            if(this.printShoppingList()) {
+            if (this.printShoppingList()) {
                 String name = getStringInput("Enter ingredient name to remove: ");
 
                 this.removeItemFromShoppingList.removeItem(activeUser.getId(), name);
@@ -80,20 +83,22 @@ public class ShoppingListHandler {
         }
 
     }
+
     public boolean printShoppingList() {
         try {
             User activeUser = this.getActiveUser();
             System.out.println("\n - Shopping List for: " + activeUser.getUserName() + " -");
             ShoppingList shoppingList = activeUser.getShoppingList();
             List ingredientList = shoppingList.getIngredients();
-            if(ingredientList.size() == 0) {
+            if (ingredientList.size() == 0) {
                 System.out.println("There are no items on your shopping list!");
                 return false;
-            }
-            else {
+            } else {
                 for (Object o : ingredientList) {
                     Ingredient ingredient = (Ingredient) o;
-                    System.out.println("Name: " + ingredient.getName() + ", Amount: " + ingredient.getMetric().getAmount() + ingredient.getMetric().getUnit() + ", Category: " + ingredient.getCategory().toString());
+                    System.out.println("Name: " + ingredient.getName() + ", Amount: "
+                            + ingredient.getMetric().getAmount() + ingredient.getMetric().getUnit() + ", Category: "
+                            + ingredient.getCategory().toString());
                 }
                 return true;
             }
@@ -102,6 +107,7 @@ public class ShoppingListHandler {
         }
         return false;
     }
+
     public void addItem() {
         try {
             User activeUser = this.getActiveUser();
@@ -120,13 +126,12 @@ public class ShoppingListHandler {
             ShoppingList shoppingList = this.addItemToShoppingList.addItem(activeUser.getId(), newIngredient);
             System.out.println(shoppingList.toString());
 
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-
     }
+
     private IngredientCategory getIngredientCategoryInput() {
         // Create a map of option numbers to ingredient categories
         Map<Integer, IngredientCategory> categoryMap = new LinkedHashMap<>(); // LinkedHashMap preserves insertion order
@@ -156,6 +161,7 @@ public class ShoppingListHandler {
             }
         }
     }
+
     private Metric getMetricInput(double amount) {
 
         Map<Integer, Object> unitMap = new LinkedHashMap<>();
@@ -166,16 +172,17 @@ public class ShoppingListHandler {
         unitMap.put(3, VolumeUnit.CUP);
         unitMap.put(4, VolumeUnit.TEASPOON);
         unitMap.put(5, VolumeUnit.TABLESPOON);
+        unitMap.put(6, VolumeUnit.PIECE);
 
-        unitMap.put(6, WeightUnit.GRAM);
-        unitMap.put(7, WeightUnit.KILOGRAM);
-        unitMap.put(8, WeightUnit.POUND);
-        unitMap.put(9, WeightUnit.OUNCE);
+        unitMap.put(7, WeightUnit.GRAM);
+        unitMap.put(8, WeightUnit.KILOGRAM);
+        unitMap.put(9, WeightUnit.POUND);
+        unitMap.put(10, WeightUnit.OUNCE);
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 6; i++) {
             metricConstructorMap.put(i, (amt, unit) -> new VolumeMetric(amt, (VolumeUnit) unit));
         }
-        for (int i = 6; i <= 9; i++) {
+        for (int i = 7; i <= 10; i++) {
             metricConstructorMap.put(i, (amt, unit) -> new WeightMetric(amt, (WeightUnit) unit));
         }
 
@@ -194,9 +201,11 @@ public class ShoppingListHandler {
             }
         }
     }
+
     private User getActiveUser() throws Exception {
         return this.getActiveUser.getActiveUser();
     }
+
     private int getIntInput(String output) {
         while (true) {
             try {
@@ -207,10 +216,12 @@ public class ShoppingListHandler {
             }
         }
     }
+
     private String getStringInput(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
+
     private double getDoubleInput(String prompt) {
         while (true) {
             try {

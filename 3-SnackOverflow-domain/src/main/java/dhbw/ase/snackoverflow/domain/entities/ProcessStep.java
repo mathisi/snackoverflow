@@ -12,6 +12,11 @@ public class ProcessStep {
         this.description = description;
     }
 
+    public ProcessStep(String description, List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+        this.description = description;
+    }
+
     public List<Ingredient> getIngredients() {
         return ingredients;
     }

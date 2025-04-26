@@ -2,6 +2,7 @@ package dhbw.ase.snackoverflow.adapters;
 
 import dhbw.ase.snackoverflow.adapters.handlers.ShoppingListHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.ManageUserHandler;
+import dhbw.ase.snackoverflow.adapters.handlers.RecipeHandler;
 import dhbw.ase.snackoverflow.domain.entities.User;
 import dhbw.ase.snackoverflow.domain.usecases.*;
 import dhbw.ase.snackoverflow.domain.valueobjects.*;
@@ -17,13 +18,20 @@ public class ConsoleAdapter {
 
     private final ShoppingListHandler shoppingListHandler;
     private final ManageUserHandler manageUserHandler;
-    public ConsoleAdapter(CreateUser createUser, ChangeUserName changeUserName, LoginUser loginUser, GetActiveUser getActiveUser, LogoutUser logoutUser, ChangeUserPassword changeUserPassword, AddItemToShoppingList addItemToShoppingList,  RemoveItemFromShoppingList removeItemFromShoppingList) {
+    private final RecipeHandler recipeHandler;
+
+    public ConsoleAdapter(CreateUser createUser, ChangeUserName changeUserName, LoginUser loginUser,
+            GetActiveUser getActiveUser, LogoutUser logoutUser, ChangeUserPassword changeUserPassword,
+            AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList,
+            FindRecipe findRecipe, CreateRecipe createRecipe) {
         this.createUser = createUser;
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
         this.scanner = new Scanner(System.in);
-        this.shoppingListHandler = new ShoppingListHandler(this.scanner, getActiveUser, addItemToShoppingList, removeItemFromShoppingList);
+        this.shoppingListHandler = new ShoppingListHandler(this.scanner, getActiveUser, addItemToShoppingList,
+                removeItemFromShoppingList);
         this.manageUserHandler = new ManageUserHandler(this.scanner, getActiveUser, changeUserPassword, changeUserName);
+        this.recipeHandler = new RecipeHandler(this.scanner, findRecipe, createRecipe, getActiveUser);
     }
 
     public void start() {
@@ -54,6 +62,7 @@ public class ConsoleAdapter {
             }
         }
     }
+
     public void startLoggedIn() {
         Map<Integer, Supplier<Boolean>> menuActions = new HashMap<>();
         menuActions.put(1, () -> {
@@ -62,6 +71,10 @@ public class ConsoleAdapter {
         });
         menuActions.put(2, () -> {
             this.shoppingListHandler.start();
+            return true;
+        });
+        menuActions.put(3, () -> {
+            this.recipeHandler.start();
             return true;
         });
         menuActions.put(10, () -> {
@@ -84,10 +97,12 @@ public class ConsoleAdapter {
             }
         }
     }
+
     private void logoutUser() {
         this.logoutUser.logout();
         System.out.println("Successfully logged out");
     }
+
     private void loginUser() {
         String email = getStringInput("Enter email: ");
         String password = getStringInput("Enter password: ");
@@ -102,7 +117,7 @@ public class ConsoleAdapter {
         }
     }
 
-    private void createUser(){
+    private void createUser() {
         System.out.println("Create a new User");
         try {
             EmailAddress emailAddress = new EmailAddress(getStringInput("Enter email adress: "));
@@ -116,18 +131,22 @@ public class ConsoleAdapter {
         }
 
     }
+
     private void printStartupMenu() {
         System.out.println("\n - Welcome to Snackoverflow -");
         System.out.println("1. Create Account");
         System.out.println("2. Login with e-mail");
         System.out.println("3. Close Application");
     }
+
     private void printLoggedInMenu() {
         System.out.println("\n - Snackoverflow -");
         System.out.println("1. Manage User");
         System.out.println("2. Manage ShoppingList");
+        System.out.println("3. Manage Recipes");
         System.out.println("10. Log out");
     }
+
     private int getIntInput(String output) {
         while (true) {
             try {
@@ -138,6 +157,7 @@ public class ConsoleAdapter {
             }
         }
     }
+
     private String getStringInput(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();

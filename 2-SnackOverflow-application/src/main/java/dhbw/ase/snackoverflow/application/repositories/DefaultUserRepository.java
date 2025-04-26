@@ -15,13 +15,20 @@ public class DefaultUserRepository implements UserRepository {
     private User activeUser;
 
     public DefaultUserRepository() {
-        // to-do: add sample data?
+        this.mockRepository();
+    }
+
+    private void mockRepository() {
+        // TODO: change mock data to have connection to recipes
         this.create(new User(0, new EmailAddress("til@til.de"), "Til", "1234"));
+        this.create(new User(0, new EmailAddress("alex@alex.com"), "Alex", "1234"));
+        this.create(new User(0, new EmailAddress("jane@doe.com"), "Jane", "1234"));
+        this.create(new User(0, new EmailAddress("john@doe.com"), "John", "1234"));
     }
 
     @Override
     public User create(User user) {
-        if(user.getId() == 0) {
+        if (user.getId() == 0) {
             int id = idHandler.incrementAndGet();
             User newUser = new User(id, user.getEmail(), user.getUserName(), user.getPassword());
             this.users.put(id, newUser);
@@ -67,7 +74,7 @@ public class DefaultUserRepository implements UserRepository {
 
     @Override
     public User setActiveUser(User newActiveUser) throws UserNotFoundException {
-        if(this.users.get(newActiveUser.getId()) == null) {
+        if (this.users.get(newActiveUser.getId()) == null) {
             throw new UserNotFoundException(newActiveUser.getEmail().toString());
         }
         this.activeUser = newActiveUser;
