@@ -16,16 +16,16 @@ import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.exceptions.RecipeNotFoundException;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
+import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
 
 public class DefaultEditRecipeTest {
 
-    private RecipeRepository recipeRepository;
+    private DefaultRecipeRepository recipeRepository;
     private DefaultEditRecipe defaultEditRecipe;
 
     @BeforeEach
     void setUp() {
-        recipeRepository = Mockito.mock(RecipeRepository.class);
+        recipeRepository = Mockito.mock(DefaultRecipeRepository.class);
         defaultEditRecipe = new DefaultEditRecipe(recipeRepository);
     }
 

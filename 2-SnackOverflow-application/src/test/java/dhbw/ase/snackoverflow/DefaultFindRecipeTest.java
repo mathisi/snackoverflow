@@ -16,19 +16,19 @@ import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
+import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
+import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 
 public class DefaultFindRecipeTest {
 
-    private RecipeRepository recipeRepository;
-    private UserRepository userRepository;
+    private DefaultRecipeRepository recipeRepository;
+    private DefaultUserRepository userRepository;
     private DefaultFindRecipe defaultFindRecipe;
 
     @BeforeEach
     public void setUp() {
-        recipeRepository = Mockito.mock(RecipeRepository.class);
-        userRepository = Mockito.mock(UserRepository.class);
+        recipeRepository = Mockito.mock(DefaultRecipeRepository.class);
+        userRepository = Mockito.mock(DefaultUserRepository.class);
         defaultFindRecipe = new DefaultFindRecipe(recipeRepository, userRepository);
     }
 

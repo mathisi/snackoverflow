@@ -14,21 +14,21 @@ import dhbw.ase.snackoverflow.application.usecases.DefaultCreateRecipe;
 import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
+import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
+import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
 
 public class DefaultCreateRecipeTest {
 
-    private RecipeRepository recipeRepository;
-    private UserRepository userRepository;
+    private DefaultRecipeRepository recipeRepository;
+    private DefaultUserRepository userRepository;
     private DefaultCreateRecipe defaultCreateRecipe;
     private User creator;
 
     @BeforeEach
     void setUp() {
-        recipeRepository = Mockito.mock(RecipeRepository.class);
-        userRepository = Mockito.mock(UserRepository.class);
+        recipeRepository = Mockito.mock(DefaultRecipeRepository.class);
+        userRepository = Mockito.mock(DefaultUserRepository.class);
         defaultCreateRecipe = new DefaultCreateRecipe(recipeRepository, userRepository);
         creator = new User(0, new EmailAddress("til@til.de"), "Til", "1234");
     }
