@@ -93,7 +93,7 @@ public class RecipeHandler {
                 }
                 case 3 -> {
                     int userId = getIntInput("Enter user ID: ");
-                    User user = new User(userId, null, null, null);
+                    User user = new User.Builder().id(0).build();
                     foundRecipes = findRecipe.findByUser(user);
                 }
                 default -> System.out.println("Invalid option. Please try again.");

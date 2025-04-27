@@ -30,7 +30,8 @@ public class DefaultCreateRecipeTest {
         recipeRepository = Mockito.mock(DefaultRecipeRepository.class);
         userRepository = Mockito.mock(DefaultUserRepository.class);
         defaultCreateRecipe = new DefaultCreateRecipe(recipeRepository, userRepository);
-        creator = new User(0, new EmailAddress("til@til.de"), "Til", "1234");
+        creator = new User.Builder().id(0).email(new EmailAddress("til@til.de")).userName("Til").password("1234").build();
+
     }
 
     @Test

@@ -17,7 +17,12 @@ public class DefaultChangeUserPasswordTest {
 
     @Test
     void changePasswordSuccessful() {
-        User user = new User(1, new EmailAddress("test@mail.de"), "name", "oldPw");
+        User user = new User.Builder()
+                .id(1)
+                .email(new EmailAddress("test@mail.de"))
+                .userName("name")
+                .password("oldPw")
+                .build();
         Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
 
         User updatedUser = changeUserPassword.changePassword(1, "newPw");

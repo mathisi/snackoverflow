@@ -27,8 +27,7 @@ public class DefaultRemoveItemFromShoppingListTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-
-        user = new User(1, new EmailAddress("test@mail.de"), "Test User", "pw");
+        user = new User.Builder().id(1).email(new EmailAddress("test@mail.de")).userName("Test User").password("pw").build();
     }
 
     @Test

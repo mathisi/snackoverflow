@@ -123,7 +123,13 @@ public class ConsoleAdapter {
             EmailAddress emailAddress = new EmailAddress(getStringInput("Enter email adress: "));
             String userName = getStringInput("Enter username: ");
             String password = getStringInput("Enter password: ");
-            User newUser = new User(0, emailAddress, userName, password);
+
+            User newUser = new User.Builder()
+                    .id(0)
+                    .email(emailAddress)
+                    .userName(userName)
+                    .password(password)
+                    .build();
             User createdUser = this.createUser.createUser(newUser);
             System.out.println("User created: " + createdUser.toString());
         } catch (Exception e) {

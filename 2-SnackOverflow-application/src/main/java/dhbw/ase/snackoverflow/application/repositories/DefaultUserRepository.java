@@ -20,17 +20,43 @@ public class DefaultUserRepository implements UserRepository {
 
     private void mockRepository() {
         // TODO: change mock data to have connection to recipes
-        this.create(new User(0, new EmailAddress("til@til.de"), "Til", "1234"));
-        this.create(new User(0, new EmailAddress("alex@alex.com"), "Alex", "1234"));
-        this.create(new User(0, new EmailAddress("jane@doe.com"), "Jane", "1234"));
-        this.create(new User(0, new EmailAddress("john@doe.com"), "John", "1234"));
+
+        this.create(new User.Builder()
+                .id(1)
+                .email(new EmailAddress("til@til.de"))
+                .userName("Til")
+                .password("1234")
+                .build());
+        this.create(new User.Builder()
+                .id(1)
+                .email(new EmailAddress("alex@alex.com"))
+                .userName("Alex")
+                .password("1234")
+                .build());
+        this.create(new User.Builder()
+                .id(1)
+                .email(new EmailAddress("jane@doe.com"))
+                .userName("Jane")
+                .password("1234")
+                .build());
+        this.create(new User.Builder()
+                .id(1)
+                .email(new EmailAddress("john@doe.com"))
+                .userName("John")
+                .password("1234")
+                .build());
     }
 
     @Override
     public User create(User user) {
         if (user.getId() == 0) {
             int id = idHandler.incrementAndGet();
-            User newUser = new User(id, user.getEmail(), user.getUserName(), user.getPassword());
+            User newUser = new User.Builder()
+                    .id(id)
+                    .email(user.getEmail())
+                    .userName(user.getUserName())
+                    .password(user.getPassword())
+                    .build();
             this.users.put(id, newUser);
             return newUser;
         } else {

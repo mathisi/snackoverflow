@@ -24,7 +24,7 @@ public class DefaultLoginUserTest {
         userRepository = Mockito.mock(UserRepository.class);
         defaultLoginUser = new DefaultLoginUser(userRepository);
         testEmail = new EmailAddress("test@example.com");
-        testUser = new User(1, testEmail, "TestUser", "password123");
+        testUser = new User.Builder().id(1).email(testEmail).userName("TestUser").password("password123").build();
     }
 
     @Test

@@ -14,15 +14,16 @@ public class User {
     private List<Recipe> recipes;
     private ShoppingList shoppingList;
 
-    public User(int id, EmailAddress email, String userName, String password) {
-        this.id = id;
-        this.email = email;
-        this.userName = userName;
-        this.password = password;
-        this.recipes = new ArrayList<Recipe>();
-        this.shoppingList = new ShoppingList(0);
 
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.email = builder.email;
+        this.userName = builder.userName;
+        this.password = builder.password;
+        this.recipes = builder.recipes != null ? builder.recipes : new ArrayList<>();
+        this.shoppingList = builder.shoppingList != null ? builder.shoppingList : new ShoppingList(0);
     }
+
     public int getId() {
         return id;
     }
@@ -54,6 +55,7 @@ public class User {
     public List<Recipe> getRecipes() {
         return recipes;
     }
+
     public ShoppingList getShoppingList() {
         return shoppingList;
     }
@@ -61,6 +63,7 @@ public class User {
     public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);
     }
+
     @Override
     public String toString() {
         return "User{" +
@@ -73,5 +76,47 @@ public class User {
                 '}';
     }
 
+    public static class Builder {
+        private int id;
+        private EmailAddress email;
+        private String userName;
+        private String password;
+        private List<Recipe> recipes;
+        private ShoppingList shoppingList;
 
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder email(EmailAddress email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder userName(String userName) {
+            this.userName = userName;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder recipes(List<Recipe> recipes) {
+            this.recipes = recipes;
+            return this;
+        }
+
+        public Builder shoppingList(ShoppingList shoppingList) {
+            this.shoppingList = shoppingList;
+            return this;
+        }
+
+        public User build() {
+
+            return new User(this);
+        }
+    }
 }

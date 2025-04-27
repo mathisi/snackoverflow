@@ -81,7 +81,8 @@ public class DefaultFindRecipeTest {
 
     @Test
     void testFindByUserSuccessfully() {
-        User user = new User(1, null, "John", "password");
+        User user = new User.Builder().id(1).userName("John").password("password").build();
+
         Recipe recipe = new Recipe(1, "Soup", 1, 15, new ArrayList<>(), user);
         user.addRecipe(recipe);
         Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
@@ -94,7 +95,7 @@ public class DefaultFindRecipeTest {
 
     @Test
     void testFindByUserThrowsWhenUserNotFound() {
-        User user = new User(1, null, "John", "password");
+        User user = new User.Builder().id(1).userName("John").password("password").build();
         Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.empty());
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -106,7 +107,7 @@ public class DefaultFindRecipeTest {
 
     @Test
     void testFindByUserThrowsWhenNoRecipes() {
-        User user = new User(1, null, "John", "password");
+        User user = new User.Builder().id(1).userName("John").password("password").build();
         Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {

@@ -35,7 +35,7 @@ public class DefaultRecipeRepository implements RecipeRepository {
                                 new Ingredient(0, new VolumeMetric(200, VolumeUnit.MILLILITER), "Tomato sauce", null),
                                 new Ingredient(0, new WeightMetric(300, WeightUnit.GRAM), "Ground beef", null),
                                 new Ingredient(0, new VolumeMetric(1, VolumeUnit.PIECE), "Onion", null)))),
-                new User(1, null, "Til", null)));
+                new User.Builder().id(1).email(null).userName("Til").password(null).build()));
         this.create(new Recipe(0, "Caesar Salad", 2, 15,
                 List.of(
                         new ProcessStep("Chop lettuce", List.of(
@@ -46,7 +46,7 @@ public class DefaultRecipeRepository implements RecipeRepository {
                                 new Ingredient(0, new WeightMetric(50, WeightUnit.GRAM), "Parmesan", null))),
                         new ProcessStep("Add croutons", List.of(
                                 new Ingredient(0, new WeightMetric(100, WeightUnit.GRAM), "Croutons", null)))),
-                new User(1, null, "Til", null)));
+                new User.Builder().id(1).email(null).userName("Til").password(null).build()));
         this.create(new Recipe(0, "Pancakes", 3, 20,
                 List.of(
                         new ProcessStep("Mix batter", List.of(
@@ -55,7 +55,7 @@ public class DefaultRecipeRepository implements RecipeRepository {
                                 new Ingredient(0, new VolumeMetric(2, VolumeUnit.PIECE), "Eggs", null))),
                         new ProcessStep("Cook on skillet", List.of(
                                 new Ingredient(0, new VolumeMetric(1, VolumeUnit.TABLESPOON), "Butter", null)))),
-                new User(2, null, "Alex", null)));
+                new User.Builder().id(2).email(null).userName("Alex").password(null).build()));
     }
 
     @Override
