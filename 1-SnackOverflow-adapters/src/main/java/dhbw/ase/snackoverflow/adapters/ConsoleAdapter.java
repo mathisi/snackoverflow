@@ -37,6 +37,9 @@ public class ConsoleAdapter {
     }
 
     public void start() {
+        this.menu();
+    }
+    private void menu() {
         Map<Integer, Supplier<Boolean>> menuActions = new HashMap<>();
         menuActions.put(1, () -> {
             createUser();
