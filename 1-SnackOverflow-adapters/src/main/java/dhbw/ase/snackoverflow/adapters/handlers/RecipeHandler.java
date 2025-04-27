@@ -9,11 +9,14 @@ import java.util.Scanner;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import dhbw.ase.snackoverflow.application.strategies.*;
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.IngredientCategory;
 import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
 import dhbw.ase.snackoverflow.domain.entities.Recipe;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
 import dhbw.ase.snackoverflow.domain.usecases.CreateRecipe;
 import dhbw.ase.snackoverflow.domain.usecases.FindRecipe;
 import dhbw.ase.snackoverflow.domain.usecases.GetActiveUser;
@@ -26,14 +29,14 @@ import dhbw.ase.snackoverflow.domain.valueobjects.WeightUnit;
 
 public class RecipeHandler {
     private final Scanner scanner;
-    private final FindRecipe findRecipe;
+    private final RecipeFinder recipeFinder;
     private final CreateRecipe createRecipe;
     private final GetActiveUser getActiveUser;
 
-    public RecipeHandler(Scanner scanner, FindRecipe findRecipe, CreateRecipe createRecipe,
+    public RecipeHandler(Scanner scanner, RecipeFinder recipeFinder, CreateRecipe createRecipe,
             GetActiveUser getActiveUser) {
         this.scanner = scanner;
-        this.findRecipe = findRecipe;
+        this.recipeFinder = recipeFinder;
         this.createRecipe = createRecipe;
         this.getActiveUser = getActiveUser;
     }
@@ -79,7 +82,9 @@ public class RecipeHandler {
             switch (choice) {
                 case 1 -> {
                     String name = getStringInput("Enter recipe name: ");
-                    foundRecipes = findRecipe.findByName(name);
+                    RecipeRepository recipeRepository = recipeFinder.getRecipeRepository();
+                    recipeFinder.setStrategy(new SearchByNameStrategy(recipeRepository));
+                    foundRecipes = recipeFinder.find(new RecipeSearchContext().name(name));
                 }
                 case 2 -> {
                     List<Ingredient> ingredients = new ArrayList<>();
@@ -89,12 +94,16 @@ public class RecipeHandler {
                         ingredients.add(new Ingredient(0, null, ingredientName, null));
                         addingIngredients = getIntInput("Add another ingredient? (1 = yes, 0 = no): ") == 1;
                     }
-                    foundRecipes = findRecipe.findByIngredients(ingredients);
+                    RecipeRepository recipeRepository = recipeFinder.getRecipeRepository();
+                    recipeFinder.setStrategy(new SearchByIngredientsStrategy(recipeRepository));
+                    foundRecipes = recipeFinder.find(new RecipeSearchContext().ingredients(ingredients));
                 }
                 case 3 -> {
                     int userId = getIntInput("Enter user ID: ");
                     User user = new User.Builder().id(0).build();
-                    foundRecipes = findRecipe.findByUser(user);
+                    UserRepository userRepository = recipeFinder.getUserRepository();
+                    recipeFinder.setStrategy(new SearchByUserStrategy(userRepository));
+                    foundRecipes = recipeFinder.find(new RecipeSearchContext().user(user));
                 }
                 default -> System.out.println("Invalid option. Please try again.");
             }

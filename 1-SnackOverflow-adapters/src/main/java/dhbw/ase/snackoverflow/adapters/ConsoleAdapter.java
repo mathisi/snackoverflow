@@ -3,6 +3,8 @@ package dhbw.ase.snackoverflow.adapters;
 import dhbw.ase.snackoverflow.adapters.handlers.ShoppingListHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.ManageUserHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.RecipeHandler;
+import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
+import dhbw.ase.snackoverflow.application.strategies.SearchByNameStrategy;
 import dhbw.ase.snackoverflow.domain.entities.User;
 import dhbw.ase.snackoverflow.domain.usecases.*;
 import dhbw.ase.snackoverflow.domain.valueobjects.*;
@@ -23,7 +25,7 @@ public class ConsoleAdapter {
     public ConsoleAdapter(CreateUser createUser, ChangeUserName changeUserName, LoginUser loginUser,
             GetActiveUser getActiveUser, LogoutUser logoutUser, ChangeUserPassword changeUserPassword,
             AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList,
-            FindRecipe findRecipe, CreateRecipe createRecipe) {
+             CreateRecipe createRecipe, RecipeFinder recipeFinder) {
         this.createUser = createUser;
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
@@ -31,7 +33,7 @@ public class ConsoleAdapter {
         this.shoppingListHandler = new ShoppingListHandler(this.scanner, getActiveUser, addItemToShoppingList,
                 removeItemFromShoppingList);
         this.manageUserHandler = new ManageUserHandler(this.scanner, getActiveUser, changeUserPassword, changeUserName);
-        this.recipeHandler = new RecipeHandler(this.scanner, findRecipe, createRecipe, getActiveUser);
+        this.recipeHandler = new RecipeHandler(this.scanner, recipeFinder, createRecipe, getActiveUser);
     }
 
     public void start() {

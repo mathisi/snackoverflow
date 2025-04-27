@@ -28,19 +28,19 @@ public class DefaultUserRepository implements UserRepository {
                 .password("1234")
                 .build());
         this.create(new User.Builder()
-                .id(1)
+                .id(2)
                 .email(new EmailAddress("alex@alex.com"))
                 .userName("Alex")
                 .password("1234")
                 .build());
         this.create(new User.Builder()
-                .id(1)
+                .id(3)
                 .email(new EmailAddress("jane@doe.com"))
                 .userName("Jane")
                 .password("1234")
                 .build());
         this.create(new User.Builder()
-                .id(1)
+                .id(4)
                 .email(new EmailAddress("john@doe.com"))
                 .userName("John")
                 .password("1234")
