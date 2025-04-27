@@ -3,6 +3,7 @@ package dhbw.ase.snackoverflow.adapters;
 import dhbw.ase.snackoverflow.adapters.handlers.ShoppingListHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.ManageUserHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.RecipeHandler;
+import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
 import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
 import dhbw.ase.snackoverflow.application.strategies.SearchByNameStrategy;
 import dhbw.ase.snackoverflow.domain.entities.User;
@@ -55,7 +56,7 @@ public class ConsoleAdapter {
         while (running) {
             try {
                 printStartupMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
@@ -91,7 +92,7 @@ public class ConsoleAdapter {
         while (running) {
             try {
                 printLoggedInMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
                 } else {
@@ -158,16 +159,7 @@ public class ConsoleAdapter {
         System.out.println("10. Log out");
     }
 
-    private int getIntInput(String output) {
-        while (true) {
-            try {
-                System.out.print(output);
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
-    }
+
 
     private String getStringInput(String prompt) {
         System.out.print(prompt);

@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
 import dhbw.ase.snackoverflow.application.strategies.*;
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.IngredientCategory;
@@ -56,7 +57,7 @@ public class RecipeHandler {
         while (running) {
             try {
                 printMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
@@ -75,7 +76,7 @@ public class RecipeHandler {
             System.out.println("1. Name");
             System.out.println("2. Ingredients");
             System.out.println("3. User");
-            final int choice = getIntInput("Choose an option: ");
+            final int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
             List<Recipe> foundRecipes = new ArrayList<>();
 
@@ -92,14 +93,14 @@ public class RecipeHandler {
                     while (addingIngredients) {
                         String ingredientName = getStringInput("Enter ingredient name: ");
                         ingredients.add(new Ingredient(0, null, ingredientName, null));
-                        addingIngredients = getIntInput("Add another ingredient? (1 = yes, 0 = no): ") == 1;
+                        addingIngredients = InputUtils.getIntInput("Add another ingredient? (1 = yes, 0 = no): ", scanner) == 1;
                     }
                     RecipeRepository recipeRepository = recipeFinder.getRecipeRepository();
                     recipeFinder.setStrategy(new SearchByIngredientsStrategy(recipeRepository));
                     foundRecipes = recipeFinder.find(new RecipeSearchContext().ingredients(ingredients));
                 }
                 case 3 -> {
-                    int userId = getIntInput("Enter user ID: ");
+                    int userId = InputUtils.getIntInput("Enter user ID: ", scanner);
                     User user = new User.Builder().id(0).build();
                     UserRepository userRepository = recipeFinder.getUserRepository();
                     recipeFinder.setStrategy(new SearchByUserStrategy(userRepository));
@@ -115,7 +116,7 @@ public class RecipeHandler {
                     System.out.println((i + 1) + ". " + foundRecipes.get(i).getName());
                 }
 
-                int recipeChoice = getIntInput("Select a recipe to display (enter number): ");
+                int recipeChoice = InputUtils.getIntInput("Select a recipe to display (enter number): ", scanner);
                 if (recipeChoice < 1 || recipeChoice > foundRecipes.size()) {
                     System.out.println("Invalid selection.");
                 } else {
@@ -146,8 +147,8 @@ public class RecipeHandler {
         try {
             final User activeUser = this.getActiveUser();
             final String recipeName = getStringInput("Enter Recipe Name: ");
-            final int numberOfPortions = getIntInput("Enter number of portions: ");
-            final int cookTime = getIntInput("Enter total cook time in minutes: ");
+            final int numberOfPortions = InputUtils.getIntInput("Enter number of portions: ", scanner);
+            final int cookTime = InputUtils.getIntInput("Enter total cook time in minutes: ", scanner);
             List<ProcessStep> processSteps = new ArrayList<>();
             boolean running = true;
             while (running) {
@@ -158,20 +159,20 @@ public class RecipeHandler {
                 while (addingIngredients) {
                     final String ingredientName = getStringInput("Enter ingredient name: ");
                     final IngredientCategory category = this.getIngredientCategoryInput();
-                    final double amount = getIntInput("Enter amount: ");
+                    final double amount = InputUtils.getIntInput("Enter amount: ", scanner);
                     final Metric ingredientMetric = this.getMetricInput(amount);
 
                     // TODO: ingredient ID always 0?
                     ingredients.add(new Ingredient(0, ingredientMetric, ingredientName,
                             category));
-                    addingIngredients = getIntInput("Add another ingredient? (1 = yes, 0 = no): ") == 1;
+                    addingIngredients = InputUtils.getIntInput("Add another ingredient? (1 = yes, 0 = no): ", scanner) == 1;
                 }
 
                 ProcessStep processStep = new ProcessStep(stepDescription);
                 processStep.setIngredients(ingredients);
                 processSteps.add(processStep);
 
-                running = getIntInput("Add another step? (1 = yes, 0 = no): ") == 1;
+                running = InputUtils.getIntInput("Add another step? (1 = yes, 0 = no): ", scanner) == 1;
             }
             final Recipe newRecipe = new Recipe(0,
                     recipeName,
@@ -196,16 +197,6 @@ public class RecipeHandler {
         System.out.println("10. Back");
     }
 
-    private int getIntInput(String output) {
-        while (true) {
-            try {
-                System.out.print(output);
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
-    }
 
     private String getStringInput(String prompt) {
         System.out.print(prompt);
@@ -232,7 +223,7 @@ public class RecipeHandler {
 
         // Get user selection
         while (true) {
-            int choice = getIntInput("Choose an option: ");
+            int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
             if (categoryMap.containsKey(choice)) {
                 return categoryMap.get(choice);
@@ -270,7 +261,7 @@ public class RecipeHandler {
         unitMap.forEach((key, unit) -> System.out.println(key + ": " + unit.getDisplayName()));
 
         while (true) {
-            int choice = getIntInput("Choose an option: ");
+            int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
             if (unitMap.containsKey(choice)) {
                 Object selectedUnit = unitMap.get(choice);
