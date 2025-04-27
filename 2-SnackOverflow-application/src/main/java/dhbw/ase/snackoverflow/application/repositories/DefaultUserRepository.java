@@ -77,21 +77,7 @@ public class DefaultUserRepository implements UserRepository {
                 .findFirst();
     }
 
-    @Override
-    public List<User> searchAll() {
-        return new ArrayList<>(users.values());
-    }
 
-    @Override
-    public void delete(int id) {
-
-    }
-
-    @Override
-    public User findByRecipe(Recipe recipe) {
-        return null;
-
-    }
 
     @Override
     public User getActiveUser() {
