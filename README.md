@@ -1,7 +1,29 @@
-# Programmentwurf
-<!--toc:start-->
-# Inhaltsverzeichnis
 
+<div align="center">
+
+# <span style="font-size:2.5em">Programmentwurf</span>
+
+## <span style="font-size:2em">Snackoverflow</span>
+
+<br><br>
+
+<span style="font-size:1.5em"><b>Name:</b> Weber, Til und Imming, Mathis</span>  
+<span style="font-size:1.5em"><b>Matrikelnummer:</b> 7456543 und </span>  
+
+<br><br>
+
+<span style="font-size:1.5em"><b>Abgabedatum:</b> 28. April 2025</span>
+
+</div>
+
+<!-- Seitenumbruch für PDF-Export -->
+<div style="page-break-after: always;"></div>
+
+
+
+# Programmentwurf
+
+<!--toc:start-->
 - [1. Einführung](#1-einführung)
   - [1.1 Übersicht über die Applikation](#11-übersicht-über-die-applikation)
   - [1.2 Wie startet man die Applikation?](#12-wie-startet-man-die-applikation)
@@ -50,17 +72,40 @@
 - [8. Design Patterns](#8-design-patterns)
   - [8.1 Strategy Pattern](#81-strategy-pattern)
   - [8.2 Builder Pattern](#82-builder-pattern)
-
 <!--toc:end-->
+
 
 # 1. Einführung
 
 ## 1.1 Übersicht über die Applikation
-Die Anwendung Snackoverflow ist ein lokales Rezeptmanagement Tool. User können mithilfe der  
-Anwendung neue Rezepte erstellen, bestehende Rezepte sich ansehen und damit dann "live kochen". Zudem besteht die Möglichkeit, sich Zutaten auf eine  Einkaufsliste zu schreiben.
+Die Anwendung Snackoverflow ist ein lokales Rezeptmanagement Tool. User können mithilfe der Anwendung neue Rezepte erstellen, bestehende Rezepte sich ansehen und damit dann "live kochen". Zudem besteht die Möglichkeit, sich Zutaten auf eine  Einkaufsliste zu schreiben.
 
 
 ## 1.2 Wie startet man die Applikation?
+
+**Voraussetzungen:**
+- Java Development Kit (JDK) Version 19
+- Apache Maven Version 4.0.0
+ 
+**Anleitung**
+
+1. **Repository klonen:**
+   ```sh
+   git clone https://github.com/mathisi/snackoverflow.git
+   cd snackoverflow
+   ```
+
+2. **Projekt bauen:**
+   ```sh
+   mvn clean install
+   ```
+
+3. **Applikation starten:**
+   ```sh
+   cd 0-snackoverflow-main
+   mvn exec:java -Dexec.mainClass="dhbw.ase.snackoverflow.main.Main"
+   ```
+Die Anwendung kann nun über Eingaben der Tastatur verwendet werden.
 
 ## 1.3 Wie testet man die Applikation?
 
@@ -68,8 +113,7 @@ Anwendung neue Rezepte erstellen, bestehende Rezepte sich ansehen und damit dann
 cd snackoverflow
 mvn test
 ```
-Die Testergebnisse werden daraufhin im Terminal angezeigt, für jedes Layer der clean 
-architecture einzelnd:
+Die Testergebnisse werden daraufhin im Terminal angezeigt, für jedes Layer der clean architecture einzelnd:
 
 ![](./images/test_output.png)
 
@@ -77,16 +121,9 @@ architecture einzelnd:
 # 2. Clean Architecture
 
 ## 2.1 Was ist Clean Architecture?
-Clean Architecture ist ein Software-Design-Ansatz, der darauf abzielt, langlebige und flexible 
-Systeme zu bauen. Die Kernidee ist, die zentrale Geschäfts- und Anwendungslogik (Domain & 
-Application Code) strikt von äußeren technischen Details wie UI, Datenbanken oder Frameworks 
-(Plugins & Adapters) zu trennen.   
+Clean Architecture ist ein Software-Design-Ansatz, der darauf abzielt, langlebige und flexible Systeme zu bauen. Die Kernidee ist, die zentrale Geschäfts- und Anwendungslogik (Domain & Application Code) strikt von äußeren technischen Details wie UI, Datenbanken oder Frameworks (Plugins & Adapters) zu trennen.   
 
-Dies geschieht durch eine Schichtenstruktur (wie eine Zwiebel) und die Dependency Rule: 
-Abhängigkeiten dürfen immer nur von außen nach innen zeigen. Dadurch bleibt der Kern unabhängig 
-und testbar, während äußere Technologien (Plugins) leichter ausgetauscht werden können, ohne den 
-Kern zu beeinträchtigen. Das Ziel ist, Technologieentscheidungen aufschieben oder revidieren zu 
-können und so die Wartbarkeit und Langlebigkeit der Software zu erhöhen.    
+Dies geschieht durch eine Schichtenstruktur (wie eine Zwiebel) und die Dependency Rule: Abhängigkeiten dürfen immer nur von außen nach innen zeigen. Dadurch bleibt der Kern unabhängig und testbar, während äußere Technologien (Plugins) leichter ausgetauscht werden können, ohne den Kern zu beeinträchtigen. Das Ziel ist, Technologieentscheidungen aufschieben oder revidieren zu können und so die Wartbarkeit und Langlebigkeit der Software zu erhöhen.    
 
 ## 2.2 Analyse der Dependency Rule
 
@@ -129,10 +166,7 @@ classDiagram
     WeightMetric o--> WeightUnit
     VolumeMetric o--> VolumeUnit
 ```
-Die Klasse `DefaultRecipeRepository` liegt auf Application Ebene und hängt von dem Interface 
-`RecipeRepository` sowie sämtlichen Entities ab, die auf Domain Ebene liegen. Dadurch wird die 
-Dependency Rule eingehalten, da Abhängigkeiten nur von außen nach innen verlaufen, und nicht von 
-innen nach außen.
+Die Klasse `DefaultRecipeRepository` liegt auf Application Ebene und hängt von dem Interface `RecipeRepository` sowie sämtlichen Entities ab, die auf Domain Ebene liegen. Dadurch wird die Dependency Rule eingehalten, da Abhängigkeiten nur von außen nach innen verlaufen, und nicht von innen nach außen.
 
 ### 2.2.2 Positiv-Beispiel: `DefaultUserRepository`
 
@@ -166,10 +200,7 @@ classDiagram
 
 ```
 
-Die Klasse `DefaultUserRepository` liegt auf Application Ebene und hängt von dem Interface
-`UserRepository` sowie sämtlichen Entities ab, die auf Domain Ebene liegen. Dadurch wird die
-Dependency Rule eingehalten, da Abhängigkeiten nur von außen nach innen verlaufen, und nicht von
-innen nach außen.
+Die Klasse `DefaultUserRepository` liegt auf Application Ebene und hängt von dem Interface `UserRepository` sowie sämtlichen Entities ab, die auf Domain Ebene liegen. Dadurch wird die Dependency Rule eingehalten, da Abhängigkeiten nur von außen nach innen verlaufen, und nicht von innen nach außen.
 
 ## 2.3 Analyse der Schichten
 
@@ -858,8 +889,7 @@ In mehreren Tests wird das `DefaultUserRepository` Objekt gemockt, um die Gesch�
 
 ```mermaid
 classDiagram
-    class DefaultChangeUserPasswordTest {
-    }
+    class DefaultChangeUserPasswordTest 
 
     class DefaultUserRepository
     
@@ -867,6 +897,7 @@ classDiagram
     DefaultChangeUserPasswordTest --> DefaultUserRepository
 
 ```
+
 Beispiel-Code:
 ```java
 private DefaultUserRepository userRepository = Mockito.mock(DefaultUserRepository.class);
@@ -898,8 +929,7 @@ In mehreren Tests wird das `DefaultRecipeRepository` Objekt gemockt, um die Gesc
 
 ```mermaid
 classDiagram
-    class DefaultCreateRecipeTest {
-    }
+    class DefaultCreateRecipeTest 
 
     class DefaultRecipeRepository
     
