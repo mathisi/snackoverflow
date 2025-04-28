@@ -1,66 +1,56 @@
 # Programmentwurf
 <!--toc:start-->
+# Inhaltsverzeichnis
+
 - [1. Einführung](#1-einführung)
-    - [1.1 Übersicht über die Applikation](#11-übersicht-über-die-applikation)
-    - [1.2 Wie startet man die Applikation?](#12-wie-startet-man-die-applikation)
-    - [1.3 Wie testet man die Applikation?](#13-wie-testet-man-die-applikation)
+  - [1.1 Übersicht über die Applikation](#11-übersicht-über-die-applikation)
+  - [1.2 Wie startet man die Applikation?](#12-wie-startet-man-die-applikation)
+  - [1.3 Wie testet man die Applikation?](#13-wie-testet-man-die-applikation)
 - [2. Clean Architecture](#2-clean-architecture)
-    - [2.1 Was ist Clean Architecture?](#21-was-ist-clean-architecture)
-    - [2.2 Analyse der Dependency Rule](#22-analyse-der-dependency-rule)
-        - [2.2.1 Positiv-Beispiel: `CustomerRepositoryImpl`](#221-positiv-beispiel-customerrepositoryimpl)
-        - [2.2.2 Positiv-Beispiel: `PolicyManagementImpl`](#222-positiv-beispiel-policymanagementimpl)
-    - [2.3 Analyse der Schichten](#23-analyse-der-schichten)
-        - [2.3.1 Schicht: Applikations-Schicht](#231-schicht-applikations-schicht)
-        - [2.3.2 Schicht: Domain-Schicht](#232-schicht-domain-schicht)
+  - [2.1 Was ist Clean Architecture?](#21-was-ist-clean-architecture)
+  - [2.2 Analyse der Dependency Rule](#22-analyse-der-dependency-rule)
+    - [2.2.1 Positiv-Beispiel: DefaultRecipeRepository](#221-positiv-beispiel-defaultreciperepository)
+    - [2.2.2 Positiv-Beispiel: DefaultUserRepository](#222-positiv-beispiel-defaultuserrepository)
+  - [2.3 Analyse der Schichten](#23-analyse-der-schichten)
+    - [2.3.1 Schicht: Applikations-Schicht](#231-schicht-applikations-schicht)
+    - [2.3.2 Schicht: Domain-Schicht](#232-schicht-domain-schicht)
 - [3. SOLID](#3-solid)
-    - [3.1 Analyse Single-Responsibility-Principle (SRP)](#31-analyse-single-responsibility-principle-srp)
-        - [3.1.1 Positiv-Beispiel: `BasicPremiumCalculationStrategy`](#311-positiv-beispiel-basicpremiumcalculationstrategy)
-        - [3.1.2 Negativ-Beispiel: `WriteCustomerManagementImpl`](#312-negativ-beispiel-writecustomermanagementimpl)
-    - [3.2 Analyse Open-Closed-Principle (OCP)](#32-analyse-open-closed-principle-ocp)
-        - [3.2.1 Positiv-Beispiel: `PremiumCalculationStrategyFactory`](#321-positiv-beispiel-premiumcalculationstrategyfactory)
-        - [3.2.2 Negativ-Beispiel: `WriteCustomerManagementImpl`](#322-negativ-beispiel-writecustomermanagementimpl)
-    - [3.3 Analyse Interface-Segregation-Principle (ISP)](#33-analyse-interface-segregation-principle-isp)
-        - [3.3.1 Positiv-Beispiel: `ReadCustomerManagement`und `WriteCustomerManagement`](#331-positiv-beispiel-readcustomermanagementund-writecustomermanagement)
-        - [3.3.2 Negativ-Beispiel: `CustomerRepository`](#332-negativ-beispiel-customerrepository)
+  - [3.1 Analyse Single-Responsibility-Principle (SRP)](#31-analyse-single-responsibility-principle-srp)
+    - [3.1.1 Positiv-Beispiel: DefaultCreateUser](#311-positiv-beispiel-defaultcreateuser)
+    - [3.1.2 Negativ-Beispiel: DefaultUserRepository](#312-negativ-beispiel-defaultuserrepository)
+  - [3.2 Analyse Open-Closed-Principle (OCP)](#32-analyse-open-closed-principle-ocp)
+    - [3.2.1 Positiv-Beispiel: RecipeFinder](#321-positiv-beispiel-recipefinder)
+    - [3.2.2 Negativ-Beispiel: DefaultUserRepository](#322-negativ-beispiel-defaultuserrepository)
+  - [3.3 Analyse Interface-Segregation-Principle (ISP)](#33-analyse-interface-segregation-principle-isp)
+    - [3.3.1 Positiv-Beispiel: LoginUser und LogoutUser](#331-positiv-beispiel-loginuserund-logoutuser)
+    - [3.3.2 Negativ-Beispiel: RecipeRepository](#332-negativ-beispiel-reciperepository)
 - [4. Weitere Prinzipien](#4-weitere-prinzipien)
-    - [4.1 Analyse GRASP: Geringe Kopplung](#41-analyse-grasp-geringe-kopplung)
-        - [4.1.1 Positives-Beispiel: `PolicyManagementImpl`](#411-positives-beispiel-policymanagementimpl)
-        - [4.1.2 Negatives-Beispiel: `TicketManagementImplTest`](#412-negatives-beispiel-ticketmanagementimpltest)
-    - [4.2 Analyse GRASP: Hohe Kohäsion](#42-analyse-grasp-hohe-kohäsion)
-    - [4.3 Don’t Repeat Yourself (DRY)](#43-dont-repeat-yourself-dry)
+  - [4.1 Analyse GRASP: Geringe Kopplung](#41-analyse-grasp-geringe-kopplung)
+    - [4.1.1 Positives-Beispiel: DefaultEditRecipe](#411-positives-beispiel-defaulteditrecipe)
+    - [4.1.2 Negatives-Beispiel: DefaultGetShoppingList](#412-negatives-beispiel-defaultgetshoppinglist)
+  - [4.2 Analyse GRASP: Hohe Kohäsion](#42-analyse-grasp-hohe-kohäsion)
+  - [4.3 Don’t Repeat Yourself (DRY)](#43-dont-repeat-yourself-dry)
 - [5. Unit Tests](#5-unit-tests)
-    - [5.1 Zehn Unit Tests - Tabelle](#51-zehn-unit-tests-tabelle)
-    - [5.2 ATRIP](#52-atrip)
-        - [5.2.1 ATRIP: Automatic](#521-atrip-automatic)
-        - [5.2.2 ATRIP: Thorough](#522-atrip-thorough)
-            - [5.2.2.1 Positiv-Beispiel](#5221-positiv-beispiel)
-            - [5.2.2.2 Positiv-Beispiel](#5222-positiv-beispiel)
-        - [5.2.3 ATRIP: Professional](#523-atrip-professional)
-            - [5.2.3.1 Positiv-Beispiel](#5231-positiv-beispiel)
-            - [5.2.3.2 Negativ-Beispiel](#5232-negativ-beispiel)
-    - [5.3 Code Coverage](#53-code-coverage)
-    - [5.4 Fakes und Mocks](#54-fakes-und-mocks)
-        - [5.4.1 Mock-Objekt: `CustomerRepository`](#541-mock-objekt-customerrepository)
-        - [5.4.2 Mock-Objekt: `WriteCustomerManagement`](#542-mock-objekt-writecustomermanagement)
+  - [5.1 Zehn Unit Tests - Tabelle](#51-zehn-unit-tests---tabelle)
+  - [5.2 ATRIP](#52-atrip)
+    - [5.2.1 ATRIP: Automatic](#521-atrip-automatic)
+    - [5.2.2 ATRIP: Thorough](#522-atrip-thorough)
+    - [5.2.3 ATRIP: Professional](#523-atrip-professional)
+  - [5.3 Code Coverage](#53-code-coverage)
+  - [5.4 Fakes und Mocks](#54-fakes-und-mocks)
 - [6. Domain-Driven-Design (DDD)](#6-domain-driven-design-ddd)
-    - [6.1 Ubiquitous Language](#61-ubiquitous-language)
-        - [6.1.1 Entities](#611-entities)
-        - [6.1.2 Nutzer](#612-nutzer)
-        - [6.1.3 Tabelle](#613-tabelle)
-    - [6.2 Entities - Policy Entity](#62-entities-policy-entity)
-    - [6.3 Value Objects - Premium Value Object](#63-value-objects-premium-value-object)
-    - [6.4 Aggregates - Customer Aggregate](#64-aggregates-customer-aggregate)
-    - [6.5 Repositories - Customer Repository](#65-repositories-customer-repository)
+  - [6.1 Ubiquitous Language](#61-ubiquitous-language)
+  - [6.2 Entities - User Entity](#62-entities---user-entity)
+  - [6.3 Value Objects - EmailAdress Object](#63-value-objects---emailadress-object)
+  - [6.4 Aggregates - Recipe Aggregate](#64-aggregates---recipe-aggregate)
+  - [6.5 Repositories - Customer Repository](#65-repositories---customer-repository)
 - [7. Refactoring](#7-refactoring)
-    - [7.1 Code Smells](#71-code-smells)
-        - [7.1.1 Long Method](#711-long-method)
-        - [7.1.2 Duplicated Code](#712-duplicated-code)
-    - [7.2 Refactorings](#72-refactorings)
-        - [7.2.1 Replace Conditional with Polymorphism](#721-replace-conditional-with-polymorphism)
-        - [7.2.2 Extract Method](#722-extract-method)
+  - [7.1 Code Smells](#71-code-smells)
+  - [7.2 Refactorings](#72-refactorings)
 - [8. Design Patterns](#8-design-patterns)
-    - [8.1 Strategy Pattern](#81-strategy-pattern)
-    - [8.2 Builder Pattern](#82-builder-pattern)
+  - [8.1 Strategy Pattern](#81-strategy-pattern)
+  - [8.2 Builder Pattern](#82-builder-pattern)
+
 <!--toc:end-->
 
 # 1. Einführung
@@ -846,6 +836,20 @@ Der Test ist nicht professionell, da das metric und ingredient Objekt manuell er
 
 ## 5.3 Code Coverage
 
+In diesem Projekt nutzen wir JaCoCo zur Messung der Code Coverage. Eine hohe Abdeckung deutet darauf hin, dass ein Großteil des Codes durch automatisierte Tests geprüft wird, was potenziell die Fehlerrate senkt.
+
+Wichtig ist: Eine hohe Code Coverage bedeutet nicht automatisch Fehlerfreiheit. Fehlende oder falsch formulierte Assertions können dazu führen, dass existierende Fehler unentdeckt bleiben.
+
+Um die Zuverlässigkeit des Codes sicherzustellen, sind sowohl positive Tests (Überprüfung des korrekten Verhaltens) als auch negative Tests (Prüfung der Fehlerbehandlung) unerlässlich.
+
+**Analyse und Begründung:**
+Der Fokus lag bei uns auf das Testen der Application layer, da dort die eigentliche Geschäftslogik liegt. Es wurden lediglich Unit Tests geschrieben, die isoliert die Logik testen sollen. Jedoch muss zugegeben werden, dass die Code Coverage selbst auf Application layer deutlich zu niedrig ist. In Zukunft sollte mindestens 80% Code Coverage mit sinnvollen tests erreicht werden. Zudem können Integrationstest hinzugefügt werden. Auf Domain Schicht wurde lediglich das value Object `EmailAddress` getestet.
+
+Domain Schicht:
+![](./images/code_cov_domain.png)
+
+Application Schicht:
+![](./images/code_cov_application.png)
 
 ## 5.4 Fakes und Mocks
 
@@ -1270,6 +1274,142 @@ classDiagram
 Das Refactoring wurde angewendet, um die Lesbarkeit zu verbessern. Der Methodenname `menu` sagt wenig bis nichts über die Funktionalität der Methode aus, wohingegen `handleStartUpMenu` genau beschreibt, was die Methode macht.
 
 # 8. Design Patterns
-## 8.1 Strategy Pattern
 
 ## 8.2 Builder Pattern
+
+```mermaid
+classDiagram
+
+    class DefaultUserRepository {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        - User activeUser
+        + DefaultUserRepository()
+        - mockRepository() void
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
+
+    class User {
+        - int id
+        - EmailAddress email
+        - String userName
+        - String password
+        - List~Recipe~ recipes
+        - ShoppingList shoppingList
+        + getId() int
+        + getEmail() EmailAddress
+        + setEmail(email: EmailAddress) void
+        + getUserName() String
+        + setUserName(userName: String) void
+        + getPassword() String
+        + setPassword(password: String) void
+        + getRecipes() List~Recipe~
+        + getShoppingList() ShoppingList
+        + addRecipe(recipe: Recipe) void
+        + toString() String
+    }
+
+    class Builder {
+        - int id
+        - EmailAddress email
+        - String userName
+        - String password
+        - List~Recipe~ recipes
+        - ShoppingList shoppingList
+        + id(id: int) Builder
+        + email(email: EmailAddress) Builder
+        + userName(userName: String) Builder
+        + password(password: String) Builder
+        + recipes(recipes: List~Recipe~) Builder
+        + shoppingList(shoppingList: ShoppingList) Builder
+        + build() User
+    }
+
+    DefaultUserRepository ..> User
+    User ..>  Builder 
+
+```
+**Begründung:**
+Das Builder Pattern wird eingesetzt, um die Erstellung von komplexen Objekten wie User übersichtlich, flexibel und fehlertolerant zu gestalten. Die Klasse User besitzt viele Attribute, von denen einige optional sind. Ein Konstruktor mit vielen Parametern wäre unübersichtlich und fehleranfällig (sog. Telescoping Constructor Problem).
+
+**Vorteile des Builder Patterns in diesem Kontext:**
+
+1. Lesbarkeit und Wartbarkeit: Der Code zum Erstellen eines User-Objekts ist durch die fluent API des Builders sehr gut lesbar und leicht zu warten.
+2. Flexibilität: Es können beliebige Kombinationen von Attributen gesetzt werden, ohne dass viele überladene Konstruktoren benötigt werden.
+3. Unveränderlichkeit: Der Builder kann genutzt werden, um ein unveränderliches (immutable) Objekt zu erzeugen, da alle Felder im Konstruktor gesetzt werden und danach nicht mehr verändert werden müssen.
+4. Fehlervermeidung: Der Builder kann Validierungen durchführen, bevor das Objekt erstellt wird, und verhindert so inkonsistente Zustände.
+
+## 8.1 Strategy Pattern
+
+```mermaid
+classDiagram
+    class RecipeFinder {
+        - RecipeRepository recipeRepository
+        - UserRepository userRepository
+        - RecipeSearchStrategy strategy
+        + RecipeFinder(strategy: RecipeSearchStrategy, recipeRepository: RecipeRepository, userRepository: UserRepository)
+        + setStrategy(strategy: RecipeSearchStrategy) void
+        + find(context: RecipeSearchContext) List~Recipe~
+        + getRecipeRepository() RecipeRepository
+        + getUserRepository() UserRepository
+    }
+
+    class RecipeSearchStrategy {
+        <<interface>>
+        + search(context: RecipeSearchContext) List~Recipe~
+    }
+
+    class SearchByIngredientsStrategy {
+        - RecipeRepository recipeRepository
+        + SearchByIngredientsStrategy(recipeRepository: RecipeRepository)
+        + search(context: RecipeSearchContext) List~Recipe~
+    }
+
+    class SearchByNameStrategy {
+        - RecipeRepository recipeRepository
+        + SearchByNameStrategy(recipeRepository: RecipeRepository)
+        + search(context: RecipeSearchContext) List~Recipe~
+    }
+
+    class SearchByUserStrategy {
+        - UserRepository userRepository
+        + SearchByUserStrategy(userRepository: UserRepository)
+        + search(context: RecipeSearchContext) List~Recipe~
+    }
+
+    class RecipeRepository
+    class UserRepository
+    class RecipeSearchContext
+
+    RecipeFinder o--> RecipeRepository
+    RecipeFinder o--> UserRepository
+    RecipeFinder o--> RecipeSearchStrategy
+    RecipeFinder ..> RecipeSearchContext
+
+    RecipeSearchStrategy <|.. SearchByIngredientsStrategy
+    RecipeSearchStrategy <|.. SearchByNameStrategy
+    RecipeSearchStrategy <|.. SearchByUserStrategy
+
+    SearchByIngredientsStrategy o--> RecipeRepository
+    SearchByIngredientsStrategy ..> RecipeSearchContext
+
+    SearchByNameStrategy o--> RecipeRepository
+    SearchByNameStrategy ..> RecipeSearchContext
+
+    SearchByUserStrategy o--> UserRepository
+    SearchByUserStrategy ..> RecipeSearchContext
+    
+```
+**Begründung:**
+Das Strategy Pattern wird eingesetzt, um verschiedene Suchalgorithmen für Rezepte (z.B. nach Name, nach Zutaten, nach Benutzer) flexibel und austauschbar zu machen.
+Jede Suchstrategie implementiert das gemeinsame Interface RecipeSearchStrategy und kapselt einen eigenen Suchalgorithmus.
+
+**Vorteile:**
+1. Austauschbarkeit: Die Suchstrategie kann zur Laufzeit gewechselt werden, ohne dass der aufrufende Code (RecipeFinder) angepasst werden muss.
+2. Offen für Erweiterung: Neue Suchstrategien können einfach durch Implementierung des Interfaces hinzugefügt werden, ohne bestehende Klassen zu verändern (Open/Closed Principle).
+3. Kapselung: Die jeweilige Suchlogik ist klar von der restlichen Anwendung getrennt und in eigenen Klassen gekapselt.

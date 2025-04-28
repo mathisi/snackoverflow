@@ -7,13 +7,14 @@ import dhbw.ase.snackoverflow.domain.users.User;
 import dhbw.ase.snackoverflow.domain.ingredients.IngredientNotFoundException;
 import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.RemoveItemFromShoppingList;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class DefaultRemoveItemFromShoppingList implements RemoveItemFromShoppingList {
 
-    private final DefaultUserRepository userRepository;
+    private final UserRepository userRepository;
 
     public DefaultRemoveItemFromShoppingList(DefaultUserRepository userRepository) {
         this.userRepository = userRepository;
