@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow;
+package dhbw.ase.snackoverflow.shoppinglists;
 
 import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
 import dhbw.ase.snackoverflow.application.shoppinglists.usecases.DefaultAddItemToShoppingList;

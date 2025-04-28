@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow;
+package dhbw.ase.snackoverflow.users;
 
 import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
 import dhbw.ase.snackoverflow.application.users.usecases.DefaultChangeUserPassword;
