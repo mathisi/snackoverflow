@@ -81,19 +81,71 @@ mvn test
 Die Testergebnisse werden daraufhin im Terminal angezeigt, für jedes Layer der clean 
 architecture einzelnd:
 
-![](/images/test_output.png)
+![](./images/test_output.png)
 
 
 # 2. Clean Architecture
 
 ## 2.1 Was ist Clean Architecture?
+Clean Architecture ist ein Software-Design-Ansatz, der darauf abzielt, langlebige und flexible 
+Systeme zu bauen. Die Kernidee ist, die zentrale Geschäfts- und Anwendungslogik (Domain & 
+Application Code) strikt von äußeren technischen Details wie UI, Datenbanken oder Frameworks 
+(Plugins & Adapters) zu trennen.   
 
+Dies geschieht durch eine Schichtenstruktur (wie eine Zwiebel) und die Dependency Rule: 
+Abhängigkeiten dürfen immer nur von außen nach innen zeigen. Dadurch bleibt der Kern unabhängig 
+und testbar, während äußere Technologien (Plugins) leichter ausgetauscht werden können, ohne den 
+Kern zu beeinträchtigen. Das Ziel ist, Technologieentscheidungen aufschieben oder revidieren zu 
+können und so die Wartbarkeit und Langlebigkeit der Software zu erhöhen.    
 
 ## 2.2 Analyse der Dependency Rule
 
-### 2.2.1 Positiv-Beispiel: `CustomerRepositoryImpl`
+### 2.2.1 Positiv-Beispiel: `DefaultRecipeRepository`
 
-### 2.2.2 Positiv-Beispiel: `PolicyManagementImpl`
+```mermaid
+classDiagram
+    class DefaultRecipeRepository {
+        - Map~Integer, Recipe~ recipes
+        - AtomicInteger idHandler
+        + DefaultRecipeRepository()
+        - mockRepository() void
+        + create(recipe: Recipe) Recipe
+        + searchByID(id: int) Optional~Recipe~
+        + searchAll() List~Recipe~
+        + delete(id: int) void
+        + findByUser(user: User) List~Recipe~
+    }
+    
+    class RecipeRepository {
+        <<interface>>
+        + create(recipe: Recipe) Recipe
+        + searchByID(id: int) Optional~Recipe~
+        + searchAll() List~Recipe~
+        + delete(id: int) void
+        + findByUser(user: User) List~Recipe~
+    }
+
+    class Recipe
+    class User
+    class Ingredient
+    class ProcessStep
+    class WeightMetric
+    class WeightUnit
+    class VolumeMetric
+    class VolumeUnit
+
+    DefaultRecipeRepository --|> RecipeRepository
+    DefaultRecipeRepository o--> Recipe
+    DefaultRecipeRepository o--> User
+    Recipe o--> ProcessStep
+    ProcessStep o--> Ingredient
+    Ingredient o--> WeightMetric
+    Ingredient o--> VolumeMetric
+    WeightMetric o--> WeightUnit
+    VolumeMetric o--> VolumeUnit
+```
+
+### 2.2.2 Positiv-Beispiel: `DefaultUserRepository`
 
 ## 2.3 Analyse der Schichten
 
