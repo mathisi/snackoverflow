@@ -1,7 +1,7 @@
 package dhbw.ase.snackoverflow;
 
 import dhbw.ase.snackoverflow.application.usecases.DefaultLogoutUser;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

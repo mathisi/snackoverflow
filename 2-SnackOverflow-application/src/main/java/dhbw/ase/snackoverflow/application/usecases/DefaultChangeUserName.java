@@ -1,8 +1,8 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.usecases.ChangeUserName;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.usecases.ChangeUserName;
 
 import java.util.Optional;
 

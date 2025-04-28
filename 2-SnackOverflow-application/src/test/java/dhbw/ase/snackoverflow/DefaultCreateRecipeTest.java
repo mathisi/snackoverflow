@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import dhbw.ase.snackoverflow.application.usecases.DefaultCreateRecipe;
-import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.recipes.ProcessStep;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.users.User;
 import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
+import dhbw.ase.snackoverflow.domain.users.EmailAddress;
 
 public class DefaultCreateRecipeTest {
 

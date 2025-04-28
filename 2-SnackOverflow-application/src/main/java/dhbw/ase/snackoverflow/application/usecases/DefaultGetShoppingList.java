@@ -1,9 +1,9 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.usecases.GetShoppingList;
+import dhbw.ase.snackoverflow.domain.shoppingllists.ShoppingList;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.GetShoppingList;
 
 import java.util.Optional;
 

@@ -7,15 +7,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
-import dhbw.ase.snackoverflow.domain.valueobjects.VolumeMetric;
-import dhbw.ase.snackoverflow.domain.valueobjects.VolumeUnit;
-import dhbw.ase.snackoverflow.domain.valueobjects.WeightMetric;
-import dhbw.ase.snackoverflow.domain.valueobjects.WeightUnit;
+import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
+import dhbw.ase.snackoverflow.domain.recipes.ProcessStep;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.metrics.VolumeMetric;
+import dhbw.ase.snackoverflow.domain.metrics.VolumeUnit;
+import dhbw.ase.snackoverflow.domain.metrics.WeightMetric;
+import dhbw.ase.snackoverflow.domain.metrics.WeightUnit;
 
 public class DefaultRecipeRepository implements RecipeRepository {
     private final Map<Integer, Recipe> recipes = new HashMap<>();

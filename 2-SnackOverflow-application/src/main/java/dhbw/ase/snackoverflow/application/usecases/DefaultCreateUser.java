@@ -1,8 +1,8 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.usecases.CreateUser;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.users.usecases.CreateUser;
 
 public class DefaultCreateUser implements CreateUser {
     private final UserRepository userRepository;

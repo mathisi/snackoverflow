@@ -1,9 +1,9 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.exceptions.NoActiveUserException;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.usecases.GetActiveUser;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.NoActiveUserException;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.users.usecases.GetActiveUser;
 
 public class DefaultGetActiveUser implements GetActiveUser {
 

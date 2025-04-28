@@ -1,13 +1,11 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
-import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.usecases.AddItemToShoppingList;
+import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
+import dhbw.ase.snackoverflow.domain.shoppingllists.ShoppingList;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.AddItemToShoppingList;
 
-import java.util.List;
 import java.util.Optional;
 
 public class DefaultAddItemToShoppingList implements AddItemToShoppingList {

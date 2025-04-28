@@ -1,11 +1,11 @@
 package dhbw.ase.snackoverflow;
 
 import dhbw.ase.snackoverflow.application.usecases.DefaultLoginUser;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.exceptions.InvalidPasswordException;
-import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.InvalidPasswordException;
+import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.users.EmailAddress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

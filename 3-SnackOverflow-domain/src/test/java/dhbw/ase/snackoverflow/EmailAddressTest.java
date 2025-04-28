@@ -1,7 +1,7 @@
 package dhbw.ase.snackoverflow;
 
-import dhbw.ase.snackoverflow.domain.exceptions.InvalidEmailAddressException;
-import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
+import dhbw.ase.snackoverflow.domain.users.InvalidEmailAddressException;
+import dhbw.ase.snackoverflow.domain.users.EmailAddress;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

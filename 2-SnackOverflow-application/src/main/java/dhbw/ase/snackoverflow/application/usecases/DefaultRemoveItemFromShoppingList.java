@@ -1,12 +1,12 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.exceptions.IngredientNotFoundException;
-import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
-import dhbw.ase.snackoverflow.domain.usecases.RemoveItemFromShoppingList;
+import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
+import dhbw.ase.snackoverflow.domain.shoppingllists.ShoppingList;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.ingredients.IngredientNotFoundException;
+import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;
+import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.RemoveItemFromShoppingList;
 
 import java.util.List;
 import java.util.Optional;

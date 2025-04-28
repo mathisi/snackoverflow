@@ -3,12 +3,12 @@ package dhbw.ase.snackoverflow.application.usecases;
 import java.util.List;
 import java.util.Optional;
 
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.exceptions.RecipeNotFoundException;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
-import dhbw.ase.snackoverflow.domain.usecases.EditRecipe;
+import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
+import dhbw.ase.snackoverflow.domain.recipes.ProcessStep;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeNotFoundException;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.recipes.usecases.EditRecipe;
 
 public class DefaultEditRecipe implements EditRecipe {
 

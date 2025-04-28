@@ -1,7 +1,7 @@
 package dhbw.ase.snackoverflow.application.strategies;
 
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeRepository;
 
 import java.util.List;
 

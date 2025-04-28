@@ -1,8 +1,7 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.usecases.LogoutUser;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.users.usecases.LogoutUser;
 
 public class DefaultLogoutUser implements LogoutUser {
     private final UserRepository userRepository;

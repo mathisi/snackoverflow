@@ -2,8 +2,8 @@ package dhbw.ase.snackoverflow;
 
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 import dhbw.ase.snackoverflow.application.usecases.DefaultChangeUserName;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.EmailAddress;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mockito;

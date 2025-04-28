@@ -1,10 +1,10 @@
 package dhbw.ase.snackoverflow.application.usecases;
 
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.usecases.DuplicateRecipe;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.recipes.usecases.DuplicateRecipe;
 
 public class DefaultDuplicateRecipe implements DuplicateRecipe {
     private final RecipeRepository recipeRepository;

@@ -11,22 +11,21 @@ import java.util.function.Supplier;
 
 import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
 import dhbw.ase.snackoverflow.application.strategies.*;
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.IngredientCategory;
-import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.repositories.RecipeRepository;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.usecases.CreateRecipe;
-import dhbw.ase.snackoverflow.domain.usecases.FindRecipe;
-import dhbw.ase.snackoverflow.domain.usecases.GetActiveUser;
-import dhbw.ase.snackoverflow.domain.valueobjects.Metric;
-import dhbw.ase.snackoverflow.domain.valueobjects.MetricUnit;
-import dhbw.ase.snackoverflow.domain.valueobjects.VolumeMetric;
-import dhbw.ase.snackoverflow.domain.valueobjects.VolumeUnit;
-import dhbw.ase.snackoverflow.domain.valueobjects.WeightMetric;
-import dhbw.ase.snackoverflow.domain.valueobjects.WeightUnit;
+import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
+import dhbw.ase.snackoverflow.domain.ingredients.IngredientCategory;
+import dhbw.ase.snackoverflow.domain.recipes.ProcessStep;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeRepository;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.recipes.usecases.CreateRecipe;
+import dhbw.ase.snackoverflow.domain.users.usecases.GetActiveUser;
+import dhbw.ase.snackoverflow.domain.metrics.Metric;
+import dhbw.ase.snackoverflow.domain.metrics.MetricUnit;
+import dhbw.ase.snackoverflow.domain.metrics.VolumeMetric;
+import dhbw.ase.snackoverflow.domain.metrics.VolumeUnit;
+import dhbw.ase.snackoverflow.domain.metrics.WeightMetric;
+import dhbw.ase.snackoverflow.domain.metrics.WeightUnit;
 
 public class RecipeHandler {
     private final Scanner scanner;

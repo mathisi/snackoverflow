@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import dhbw.ase.snackoverflow.application.usecases.DefaultEditRecipe;
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.ProcessStep;
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.exceptions.RecipeNotFoundException;
+import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
+import dhbw.ase.snackoverflow.domain.recipes.ProcessStep;
+import dhbw.ase.snackoverflow.domain.recipes.Recipe;
+import dhbw.ase.snackoverflow.domain.recipes.RecipeNotFoundException;
 import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
 
 public class DefaultEditRecipeTest {

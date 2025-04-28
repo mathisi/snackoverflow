@@ -1,10 +1,9 @@
 package dhbw.ase.snackoverflow.application.repositories;
 
-import dhbw.ase.snackoverflow.domain.entities.Recipe;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.exceptions.UserNotFoundException;
-import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
-import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;
+import dhbw.ase.snackoverflow.domain.users.UserRepository;
+import dhbw.ase.snackoverflow.domain.users.EmailAddress;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
