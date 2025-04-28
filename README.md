@@ -118,11 +118,6 @@ classDiagram
     
     class RecipeRepository {
         <<interface>>
-        + create(recipe: Recipe) Recipe
-        + searchByID(id: int) Optional~Recipe~
-        + searchAll() List~Recipe~
-        + delete(id: int) void
-        + findByUser(user: User) List~Recipe~
     }
 
     class Recipe
@@ -144,142 +139,1135 @@ classDiagram
     WeightMetric o--> WeightUnit
     VolumeMetric o--> VolumeUnit
 ```
+Die Klasse `DefaultRecipeRepository` liegt auf Application Ebene und hängt von dem Interface 
+`RecipeRepository` sowie sämtlichen Entities ab, die auf Domain Ebene liegen. Dadurch wird die 
+Dependency Rule eingehalten, da Abhängigkeiten nur von außen nach innen verlaufen, und nicht von 
+innen nach außen.
 
 ### 2.2.2 Positiv-Beispiel: `DefaultUserRepository`
+
+```mermaid
+classDiagram
+    class DefaultUserRepository {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        - User activeUser
+        + DefaultUserRepository()
+        - mockRepository() void
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
+
+    class UserRepository {
+        <<interface>>
+    }
+
+    class User
+    class EmailAddress
+
+    DefaultUserRepository --|> UserRepository
+    DefaultUserRepository o--> User
+    DefaultUserRepository o--> EmailAddress
+
+
+```
+
+Die Klasse `DefaultUserRepository` liegt auf Application Ebene und hängt von dem Interface
+`UserRepository` sowie sämtlichen Entities ab, die auf Domain Ebene liegen. Dadurch wird die
+Dependency Rule eingehalten, da Abhängigkeiten nur von außen nach innen verlaufen, und nicht von
+innen nach außen.
 
 ## 2.3 Analyse der Schichten
 
 ### 2.3.1 Schicht: Applikations-Schicht
 
-### 2.3.2 Schicht: Domain-Schicht
+```mermaid
+classDiagram
+    class DefaultRemoveItemFromShoppingList {
+        - DefaultUserRepository userRepository
+        + DefaultRemoveItemFromShoppingList(userRepository: DefaultUserRepository)
+        + removeItem(userId: int, name: String) ShoppingList
+    }
 
+    class RemoveItemFromShoppingList {
+        <<interface>>
+        + removeItem(userId: int, name: String) ShoppingList
+    }
+
+    class UserRepository {
+        <<interface>>
+    }
+
+    DefaultRemoveItemFromShoppingList --|> RemoveItemFromShoppingList
+    DefaultRemoveItemFromShoppingList o--> UserRepository
+
+```
+
+*Aufgabe*:
+Die Klasse `DefaultRemoveItemFromShoppingList`repräsentiert in der Anwendung den Use Case, dass Nutzer eine Zutat von ihrer ShoppingList entfernen können. Dabei pflegt es Abhängigkeiten zu dem Interface `RemoveItemFromShoppingList` und der Klasse `UserRepository`. 
+
+*Einordnung in Clean Architecture*:
+Die Klasse gehört in die Applikations Schicht, da sie Geschäftslogik repräsentiert, nämlich das Entfernen von Zutaten von der ShoppingList. Sie kapselt die Geschäftslogik von der Datenbank-Implementierung sinnvoll ab, und pflegt lediglich Abhängigkeiten zu Interfaces auf Domain Ebene.
+
+### 2.3.2 Schicht: Domain-Schicht
+```mermaid
+classDiagram
+    class Ingredient {
+        - int id
+        - Metric metric
+        - String name
+        - IngredientCategory category
+        + Ingredient(id: int, metric: Metric, name: String, category: IngredientCategory)
+        + getId() int
+        + setId(id: int) void
+        + getMetric() Metric
+        + setMetric(metric: Metric) void
+        + getName() String
+        + setName(name: String) void
+        + getCategory() IngredientCategory
+        + setCategory(category: IngredientCategory) void
+        + toString() String
+    }
+
+    class Metric
+    class IngredientCategory
+
+    Ingredient o--> Metric
+    Ingredient o--> IngredientCategory
+```
+*Aufgabe*:
+Die Klasse `Ingredient`repräsentiert in der Anwendung eine Zutat für ein Rezept. Dabei hat es Abhängigkeiten zu den Klassen `Metric` und `IngredientCategory`, die genaue Einzelheiten zu der Zutat darstellen.
+
+*Einordnung in Clean Architecture*:
+Die Klasse gehört in die Domain-Schicht, da sie eine zentrale Aufgabe der Anwendung ist. Sie hat Abhängigkeiten lediglich auf Domain Schicht und kann von jeder Klasse auf Application Schicht konsumiert werden.
 
 # 3. SOLID
 
 ## 3.1 Analyse Single-Responsibility-Principle (SRP)
 
-### 3.1.1 Positiv-Beispiel: `BasicPremiumCalculationStrategy`
+### 3.1.1 Positiv-Beispiel: `DefaultCreateUser`
+```mermaid
+classDiagram
+    class DefaultCreateUser {
+        - UserRepository userRepository
+        + DefaultCreateUser(userRepository: UserRepository)
+        + createUser(user: User) User
+    }
+
+    class CreateUser {
+        <<interface>>
+        + createUser(user: User) User
+    }
+
+    class UserRepository {
+        <<interface>>
+    }
+    class User 
+
+    DefaultCreateUser --|> CreateUser
+    DefaultCreateUser o--> UserRepository
+    UserRepository o--> User
+
+```
+Die Klasse `DefaultCreateUser` hat lediglich die Aufgabe, einen neuen Benutzer zu erstellen. Daher erfüllt es das SRP, da es keine andere Aufgabe hat.
 
 
+### 3.1.2 Negativ-Beispiel: `DefaultUserRepository`
+```mermaid
+classDiagram
+    class DefaultUserRepository {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        - User activeUser
+        + DefaultUserRepository()
+        - mockRepository() void
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
 
-### 3.1.2 Negativ-Beispiel: `WriteCustomerManagementImpl`
+    class UserRepository {
+        <<interface>>
+    }
+
+    class User
+    class EmailAddress
+
+    DefaultUserRepository --|> UserRepository
+    DefaultUserRepository o--> User
+    DefaultUserRepository o--> EmailAddress
+
+
+```
+Die Klasse `DefaultUserRepository` kümmert sich um die Verwaltung von Benutzern in der Anwendung. Sie erfüllt das SRP prinzip nicht vollständig, da sie verschiedene Aufgaben hat, wie z.B. den User zu erstellen, oder auch den User zu lesen. Ein möglicher Lösungsweg wäre, die Klasse in `DefaultWriteUserService` und `DefaultReadUserService`aufzuteilen. Dadurch sind die Verantwortlichkeiten sinnvoll aufgeteilt. Eine Klasse kümmert sich um das Schreiben von Benutzern, die andere Klasse kümmert sich um das Lesen von Nutzern
+
+Möglicher Lösungsweg:
+```mermaid
+classDiagram
+    class DefaultWriteUserService {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        - User activeUser
+        + DefaultWriteUserService()
+        + create(user: User) User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
+
+    class DefaultReadUserService {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        - User activeUser
+        + DefaultReadUserService()
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+    }
+
+    class UserRepository {
+        <<interface>>
+    }
+
+    class User
+    class EmailAddress
+
+    DefaultWriteUserService --|> UserRepository
+    DefaultReadUserService --|> UserRepository
+
+    DefaultWriteUserService o--> User
+    DefaultWriteUserService o--> EmailAddress
+
+    DefaultReadUserService o--> User
+    DefaultReadUserService o--> EmailAddress
+
+
+```
 
 
 ## 3.2 Analyse Open-Closed-Principle (OCP)
 
-### 3.2.1 Positiv-Beispiel: `PremiumCalculationStrategyFactory`
+### 3.2.1 Positiv-Beispiel: `RecipeFinder`
+
+```mermaid
+classDiagram
+    class RecipeFinder {
+        - RecipeRepository recipeRepository
+        - UserRepository userRepository
+        - RecipeSearchStrategy strategy
+        + RecipeFinder(strategy: RecipeSearchStrategy, recipeRepository: RecipeRepository, userRepository: UserRepository)
+        + setStrategy(strategy: RecipeSearchStrategy) void
+        + find(context: RecipeSearchContext) List~Recipe~
+        + getRecipeRepository() RecipeRepository
+        + getUserRepository() UserRepository
+    }
+
+    class RecipeSearchStrategy {
+        <<interface>>
+        + search(context: RecipeSearchContext) List~Recipe~
+    }
+
+    class RecipeRepository {
+        <<interface>>
+    }
+    class UserRepository {
+        <<interface>>
+    }
+
+    class RecipeSearchContext
+    class Recipe
+
+    RecipeFinder o--> RecipeRepository
+    RecipeFinder o--> UserRepository
+    RecipeFinder o--> RecipeSearchStrategy
+    RecipeFinder ..> RecipeSearchContext
+    RecipeFinder ..> Recipe
+    RecipeSearchStrategy ..> RecipeSearchContext
+    RecipeSearchStrategy ..> Recipe
+
+```
+Die Klasse `RecipeFinder` erfüllt das OCP, da es offen für Erweiterungen ist. Neue Strategien zum Finden von Rezepten kann durch das Anlegen neuer `RecipeSearchStrategy` Klassen realisiert werden, ohne dabei die vorhandene Klasse verändern zu müssen. 
 
 
-### 3.2.2 Negativ-Beispiel: `WriteCustomerManagementImpl`
+### 3.2.2 Negativ-Beispiel: `DefaultUserRepository`
+```mermaid
+classDiagram
+    class DefaultUserRepository {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        - User activeUser
+        + DefaultUserRepository()
+        - mockRepository() void
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
 
+    class UserRepository {
+        <<interface>>
+    }
+
+    class User
+    class EmailAddress
+
+    DefaultUserRepository --|> UserRepository
+    DefaultUserRepository o--> User
+    DefaultUserRepository o--> EmailAddress
+
+
+```
+Die Klasse `DefaultUserRepository` verletzt das OCP, da es nicht offen für Erweiterungen ist. Alle Logik (z.B. Speicherung, Suche, Authentifizierung) ist fest in einer Klasse implementiert. Wenn sich z.B. die Art der Speicherung (In-Memory, Datenbank, REST-Service) oder das Suchverhalten ändert, muss die Klasse geändert werden. 
+
+**Lösungsvorschlag**:
+- Extrahiere die Speicherlogik in ein Interface, z.B. UserStorage.
+- Implementiere verschiedene Speicherstrategien (z.B. InMemoryUserStorage, DatabaseUserStorage).
+DefaultUserRepository verwendet das Interface und ist so offen für neue Speicherarten, ohne selbst geändert werden zu müssen.
+
+UML:
+```mermaid
+classDiagram
+    class UserRepository {
+        <<interface>>
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
+
+    class DefaultUserRepository {
+        - UserStorage userStorage
+        - User activeUser
+        + DefaultUserRepository(userStorage: UserStorage)
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
+
+    class UserStorage {
+        <<interface>>
+        + save(user: User) User
+        + findById(id: int) Optional~User~
+        + findByEmail(email: EmailAddress) Optional~User~
+        + getAll() List~User~
+    }
+
+    class InMemoryUserStorage {
+        - Map~Integer, User~ users
+        - AtomicInteger idHandler
+        + save(user: User) User
+        + findById(id: int) Optional~User~
+        + findByEmail(email: EmailAddress) Optional~User~
+        + getAll() List~User~
+    }
+
+    class User
+    class EmailAddress
+
+    UserRepository <|.. DefaultUserRepository
+    DefaultUserRepository o--> UserStorage
+    UserStorage <|.. InMemoryUserStorage
+    UserStorage ..> User
+    UserStorage ..> EmailAddress
+
+```
 
 
 ## 3.3 Analyse Interface-Segregation-Principle (ISP)
 
-### 3.3.1 Positiv-Beispiel: `ReadCustomerManagement`und `WriteCustomerManagement`
+### 3.3.1 Positiv-Beispiel: `LoginUser`und `LogoutUser`
+```mermaid
+classDiagram
+    class LoginUser {
+        <<interface>>
+        + login(email: EmailAddress, password: String) User
+    }
+
+    class User
+    class EmailAddress
+
+    LoginUser ..> User
+    LoginUser ..> EmailAddress
+
+    class LogoutUser {
+        <<interface>>
+        + logout() void
+    }
+```
 
 
-### 3.3.2 Negativ-Beispiel: `CustomerRepository`
+Die beiden Interfaces `LoginUser` und `LogoutUser` erf+llen das ISP, da beide nach Funktionalität aufgeteilt sind. Daher müssen Klassen, die die Interfaces konsumieren, keine unnötigen Funktionen implementieren.
 
+
+### 3.3.2 Negativ-Beispiel: `RecipeRepository`
+
+```mermaid
+classDiagram
+    class RecipeRepository {
+        <<interface>>
+        + create(recipe: Recipe) Recipe
+        + searchByID(id: int) Optional~Recipe~
+        + searchAll() List~Recipe~
+        + delete(id: int) void
+        + findByUser(user: User) List~Recipe~
+    }
+
+    class Recipe
+    class User
+
+    RecipeRepository ..> Recipe
+    RecipeRepository ..> User
+
+```
+
+Das Interface `RecipeRepository` verletzt das ISP, da es viele verschiedene Funktionen definiert, die implementierende Klassen eventuell nicht benötigen. Möchte eine Klasse z.B. lediglich Rezepte lesen, muss sie wegen des Interaces auch schreibende Methoden implementieren.
+
+Mögliche Lösung:
+```mermaid
+classDiagram
+    class WriteRecipeRepository {
+        <<interface>>
+        + create(recipe: Recipe) Recipe
+        + delete(id: int) void
+    }
+
+    class ReadRecipeRepository {
+        <<interface>>
+        + searchByID(id: int) Optional~Recipe~
+        + searchAll() List~Recipe~
+        + findByUser(user: User) List~Recipe~
+    }
+
+    class Recipe
+    class User
+
+    WriteRecipeRepository ..> Recipe
+    ReadRecipeRepository ..> Recipe
+    ReadRecipeRepository ..> User
+
+```
+
+Durch diese Aufteilung sind Klassen nicht gezwungen, unnötige Methoden zu implementieren, die sie nicht benötigen.
 
 # 4. Weitere Prinzipien
 ## 4.1 Analyse GRASP: Geringe Kopplung
 
-### 4.1.1 Positives-Beispiel: 
+### 4.1.1 Positives-Beispiel: `DefaultEditRecipe`
 
-### 4.1.2 Negatives-Beispiel: 
+```mermaid
+classDiagram
+    class DefaultEditRecipe {
+        - RecipeRepository recipeRepository
+        + DefaultEditRecipe(recipeRepository: RecipeRepository)
+        + updateRecipeName(recipeId: int, newName: String) Recipe
+        + updateRecipeIngredients(recipeId: int, newIngredients: List~Ingredient~) Recipe
+        + updateRecipeInstructions(recipeId: int, newInstructions: List~ProcessStep~) Recipe
+        + updateRecipe(recipeId: int, updatedRecipe: Recipe) Recipe
+    }
+
+    class EditRecipe {
+        <<interface>>
+        + updateRecipeName(recipeId: int, newName: String) Recipe
+        + updateRecipeIngredients(recipeId: int, newIngredients: List~Ingredient~) Recipe
+        + updateRecipeInstructions(recipeId: int, newInstructions: List~ProcessStep~) Recipe
+        + updateRecipe(recipeId: int, updatedRecipe: Recipe) Recipe
+    }
+
+    class RecipeRepository {
+        <<interface>>
+    }
+    class Recipe
+    class Ingredient
+    class ProcessStep
+
+    DefaultEditRecipe --|> EditRecipe
+    DefaultEditRecipe o--> RecipeRepository
+    DefaultEditRecipe ..> Recipe
+    DefaultEditRecipe ..> Ingredient
+    DefaultEditRecipe ..> ProcessStep
+
+```
+Die Klasse `DefaultEditRecipe` weist eine geringe Kopplung auf, da sie von den Interface `EditRecipe` und `RecipeRepository` abhängt und nicht von einer konkreten Implementierung. Dadurch wird die Klasse flexibler und kann besser getestet werden. Zudem bringen Änderungen der konkreten Implementierungen vom Interface `RecipeRepository` keine direkten Änderungen in der Klasse `DefaultEditRecipe` mit sich, da direkte Abhängigkeiten reduziert wurden. 
+
+### 4.1.2 Negatives-Beispiel: `DefaultGetShoppingList`
+
+```mermaid
+classDiagram
+    class DefaultGetShoppingList {
+        - DefaultUserRepository userRepository
+        + DefaultGetShoppingList(userRepository: DefaultUserRepository)
+        + getShoppingList(userId: int) ShoppingList
+    }
+
+    class GetShoppingList {
+        <<interface>>
+        + getShoppingList(userId: int) ShoppingList
+    }
+
+    class DefaultUserRepository
+    class UserRepository {
+        <<interface>>
+    }
+    class User
+    class ShoppingList
+
+    DefaultGetShoppingList --|> GetShoppingList
+    DefaultGetShoppingList o--> DefaultUserRepository
+    DefaultUserRepository --|> UserRepository
+    DefaultUserRepository ..> User
+    User o--> ShoppingList
+
+```
+
+Die Klasse `DefaultGetShoppingList` weist eine hohe Kopplung auf, da sie direkt von der konkreten Implementierung `DefaultUserRepository` abhängt. Dies erschwert das Testen, da Änderungen in der konkreten Implementierung auch Änderungen in der Klasse `DefaultGetShoppingList` mit sich bringen kann. Die Kopplung kann aufgehoben werden, indem die Klasse lediglich von dem Interface `UserRepository` abhängt, und nicht von einer konkreten Implementierung.
+
+```mermaid
+classDiagram
+    class DefaultGetShoppingList {
+        - DefaultUserRepository userRepository
+        + DefaultGetShoppingList(userRepository: DefaultUserRepository)
+        + getShoppingList(userId: int) ShoppingList
+    }
+
+    class GetShoppingList {
+        <<interface>>
+        + getShoppingList(userId: int) ShoppingList
+    }
+
+    class UserRepository {
+        <<interface>>
+    }
+    class User
+    class ShoppingList
+
+    DefaultGetShoppingList --|> GetShoppingList
+    DefaultGetShoppingList --|> UserRepository
+    UserRepository ..> User
+    User o--> ShoppingList
+
+```
 
 ## 4.2 Analyse GRASP: Hohe Kohäsion
 
+```mermaid
+classDiagram
+    class VolumeMetric {
+        - double amount
+        - VolumeUnit unit
+        + VolumeMetric(amount: double, unit: VolumeUnit)
+        + getAmount() double
+        + getUnit() String
+    }
 
+    class Metric {
+        <<interface>>
+        + getAmount() double
+        + getUnit() String
+    }
+
+    class VolumeUnit {
+        + getDisplayName() String
+    }
+
+    VolumeMetric --|> Metric
+    VolumeMetric o--> VolumeUnit
+
+```
+
+**Begründung:**
+Die Klasse VolumeMetric weist eine hohe Kohäsion auf, da alle Attribute und Methoden semantisch eng miteinander verbunden sind und sich auf die Verwaltung einer Volumeneinheit konzentrieren. Die Attribute amount und unit beschreiben die wesentlichen Eigenschaften einer Volumenangabe. Die Methoden der Klasse (getAmount, getUnit) arbeiten direkt mit diesen Attributen und bieten eine klare und verständliche Schnittstelle zur Abfrage der Volumen-Metrik.
+
+**Vorteile hoher Kohäsion:**
+Die Klasse VolumeMetric hat ein einfaches und verständliches Design, da sie sich auf eine einzige Verantwortlichkeit konzentriert: die Verwaltung einer Volumenangabe mit Einheit. Durch die klare Trennung der Verantwortlichkeiten und die enge semantische Verbindung der Attribute und Methoden kann die Klasse VolumeMetric in verschiedenen Kontexten wiederverwendet werden, ohne dass Änderungen erforderlich sind.
+
+**Technische Metriken:**
+Die Klasse VolumeMetric hat eine überschaubare Anzahl von Attributen und Methoden, was zur Übersichtlichkeit beiträgt. Die Methoden der Klasse nutzen die Attribute intensiv, was auf eine hohe Kohäsion hinweist.
 ## 4.3 Don’t Repeat Yourself (DRY)
+
+Hash des commits: 8d7ba47f5f97806fe5ccdd97f95ee15bbf81bd1c
+
+Vorher:
+```java
+private int getIntInput(String output) {
+        while (true) {
+            try {
+                System.out.print(output);
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+
+int choice = getIntInput("Choose an option: ");
+```
+Dieser Code war vorher auf Adapter Ebene in den Klassen `ConsoleAdapter`, `ManageUserHandler`, `RecipeHandler` und `ShoppingListHandler` separat als eigenstände Methode. Da die Methode überall dasselbe macht, nämlich den Input des Users als integer Wert zurückzugeben, haben wir diese in eine static Methode in die Klasse `InputUtils` verlagert.
+
+Usage nachher:
+```java
+public class InputUtils {
+    public static int getIntInput(String output, Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print(output);
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+}
+
+int choice = InputUtils.getIntInput("Choose an option: ", scanner);
+```
+Begründung und Auswirkung:
+Die Logik zum abfangen von Konsolen Input ist in allen Klassen gleich. Sollte im Laufe der Entwicklung bei der Logik Änderungen vorgenommen werden müssen, müssen diese jetzt nur noch zentral in der statischen Methode verändert werden, und nicht mehr in jeder Klasse einzelnd.
 
 # 5. Unit Tests
 ## 5.1 Zehn Unit Tests - Tabelle
-Die folgenden aufgeführten Tests befinden sich in der `PolicyManagementImplTest` Klasse.
 
-| Unit Test | Beschreibung |
-|-----------|--------------|
-| `add_basic_policy` | Testet das Hinzufügen einer BASIC-Policy zu einem Kunden und überprüft die Prämienberechnung und die Anzahl der Policies des Kunden. |
-| `add_policy_basic_with_young_driver` | Testet das Hinzufügen einer BASIC-Policy zu einem jungen Fahrer und überprüft die Prämienberechnung und die Anzahl der Policies des Kunden. |
-| `add_policy_basic_with_senior_driver` | Testet das Hinzufügen einer BASIC-Policy zu einem älteren Fahrer und überprüft die Prämienberechnung und die Anzahl der Policies des Kunden. |
-| `add_basic_policy_with_car_value_fee` | Testet das Hinzufügen einer BASIC-Policy mit einem hohen Autowert und überprüft die Prämienberechnung und die Anzahl der Policies des Kunden. |
-| `add_standard_policy` | Testet das Hinzufügen einer STANDARD-Policy zu einem Kunden und überprüft die Prämienberechnung und die Anzahl der Policies des Kunden. |
-| `add_deluxe_policy` | Testet das Hinzufügen einer DELUXE-Policy zu einem Kunden und überprüft die Prämienberechnung und die Anzahl der Policies des Kunden. |
-| `add_policy_with_too_high_car_value` | Testet das Hinzufügen einer Policy mit einem zu hohen Autowert und überprüft, ob eine `CarTooExpensiveException` geworfen wird. |
-| `add_policy_with_customer_under_18_years_old` | Testet das Hinzufügen einer Policy zu einem Kunden unter 18 Jahren und überprüft, ob eine `CustomerTooYoungException` geworfen wird. |
-| `increase_all_policies_premium` | Testet die Erhöhung der Prämien aller Policies eines Kunden und überprüft die neue Prämienhöhe. |
-| `add_policy_with_customer_not_found` | Testet das Hinzufügen einer Policy zu einem nicht existierenden Kunden und überprüft, ob eine `CustomerNotFoundException` geworfen wird. |
+| Klasse                                | Test                         | Beschreibung                |
+| ------------------------------------- | ---------------------------- | ----------------------------|
+| EmailAddressTest                      | createValidAddress           | Testet, ob eine gültige E-Mail-Adresse korrekt erstellt wird und die Adresse wie erwartet zurückgegeben wird.
+|                                       | createInvalidAddress         | Testet, ob beim Erstellen einer ungültigen E-Mail-Adresse eine `InvalidEmailAddressException` ausgelöst wird.
+|                                       | returnDomain                 | Testet, ob die Methode zur Rückgabe der Domain einer E-Mail-Adresse den korrekten Domain-Teil liefert.
+|                                       | validateEquality             | Testet, ob zwei EmailAddress-Objekte mit identischer Adresse als gleich betrachtet werden.
+| DefaultLoginUserTest                  | testLoginSuccessful          | Testet, ob ein Benutzer mit korrekten Zugangsdaten erfolgreich eingeloggt wird und der zurückgegebene Benutzer dem erwarteten Benutzer entspricht.
+|                                       | testLoginUserNotFound        | Testet, ob beim Login-Versuch mit einer nicht existierenden E-Mail-Adresse eine `UserNotFoundException` mit der korrekten Fehlermeldung geworfen wird.
+|                                       | testLoginInvalidPassword     | Testet, ob beim Login-Versuch mit falschem Passwort eine `InvalidPasswordException` mit der korrekten Fehlermeldung geworfen wird.
+| DefaultRemoveItemFromShoppingListTest | removeItemSuccessful         | Testet, ob ein vorhandenes Ingredient erfolgreich aus der Einkaufsliste eines existierenden Benutzers entfernt wird.
+|                                       | removeItemUserNotFound       | Testet, ob beim Versuch, ein Ingredient aus der Einkaufsliste eines nicht existierenden Benutzers zu entfernen, eine `UserNotFoundException` mit der korrekten Fehlermeldung geworfen wird.
+|                                       | removeItemIngredientNotFound | Testet, ob beim Versuch, ein nicht vorhandenes Ingredient aus der Einkaufsliste zu entfernen, eine `IngredientNotFoundException` mit der korrekten Fehlermeldung geworfen wird.
 
 ## 5.2 ATRIP
 ### 5.2.1 ATRIP: Automatic
 
+Bei Maven Projekten wird durch das `maven-surefire-plugin` JUnit Tests automatisch während der Testphase ausgeführt. Dadurch werden alle Tests automatisch im Entwicklungsprozess ausgeführt.
+
+
 ### 5.2.2 ATRIP: Thorough
 #### 5.2.2.1 Positiv-Beispiel
+```java 
+@Test
+void removeItemSuccessful() {
 
+    Metric metric = new VolumeMetric(10, VolumeUnit.LITER);
+    String ingredientName = "Tomato";
+    Ingredient ingredient = new Ingredient(0, metric, ingredientName, IngredientCategory.BEVERAGES);
+
+    ShoppingList shoppingList = user.getShoppingList();
+    List<Ingredient> ingredients = new ArrayList<>(shoppingList.getIngredients());
+    ingredients.add(ingredient);
+    shoppingList.setIngredients(ingredients);
+
+    Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
+
+    ShoppingList result = removeItemFromShoppingList.removeItem(1, ingredientName);
+
+    assertNotNull(result);
+    assertFalse(result.getIngredients().stream()
+                    .anyMatch(ing -> ing.getName().equals(ingredientName)),
+            "Ingredient should have been removed from the shopping list.");
+}
+```
+
+
+Die Testmethode „removeItemSuccessful“ entspricht dem ATRIP-Prinzip „Thorough“, weil sie den vollständigen Ablauf des Entfernens eines Ingredients aus der Einkaufsliste eines Benutzers prüft. Sie stellt sicher, dass das Ingredient tatsächlich in der Liste vorhanden ist, bevor es entfernt wird, und überprüft anschließend explizit, dass das Ingredient nach der Operation nicht mehr in der Liste enthalten ist. Durch die Verwendung von Mocking für das Repository wird sichergestellt, dass der Benutzer korrekt gefunden und verwendet wird, wodurch externe Einflüsse ausgeschlossen werden. Außerdem wird nicht nur das Ergebnisobjekt auf null geprüft, sondern auch der konkrete Zustand der Einkaufsliste nach der Operation, was eine gründliche Überprüfung des Verhaltens garantiert.
 #### 5.2.2.2 Positiv-Beispiel
+```java
+@Test
+void removeItemIngredientNotFound() {
+
+    Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
+
+    ShoppingList shoppingList = user.getShoppingList();
+    shoppingList.setIngredients(new ArrayList<>()); // Ensuring empty list
+
+    Exception exception = assertThrows(IngredientNotFoundException.class, () -> {
+        removeItemFromShoppingList.removeItem(1, "NonExistingIngredient");
+    });
+    assertEquals("Ingredient NonExistingIngredient not found!", exception.getMessage());
+}
+```
+Die Testmethode „removeItemIngredientNotFound“ ist thorough, weil sie gezielt den Fall prüft, dass ein zu entfernendes Ingredient nicht in der Einkaufsliste vorhanden ist. Sie sorgt dafür, dass die Einkaufsliste vor dem Test explizit leer ist, um sicherzustellen, dass der Fehlerfall eindeutig ausgelöst wird. Der Test überprüft nicht nur, dass eine IngredientNotFoundException geworfen wird, sondern auch, dass die Fehlermeldung exakt dem erwarteten Text entspricht. Damit wird sichergestellt, dass sowohl die Fehlererkennung als auch die Fehlerkommunikation im System gründlich und korrekt funktionieren.
 
 
 ### 5.2.3 ATRIP: Professional
 
 #### 5.2.3.1 Positiv-Beispiel
+Folgender Test befindet sich in der Klasse `DefaultChangeUserNameTest`
+```java 
+@Test
+void changeNameSuccessful() {
+    User user = new User.Builder().id(1).email(new EmailAddress("test@mail.de")).userName("OldName").password("pw").build();
+
+    Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
+
+    User updatedUser = changeUserName.changeName(1, "NewName");
+
+    assertNotNull(updatedUser);
+    assertEquals("NewName", updatedUser.getUserName());
+    Mockito.verify(userRepository, Mockito.times(1)).searchByID(1);
+}
+```
+Der Test ist professionell, weil er klar und verständlich aufgebaut ist, sprechende Namen verwendet und die Testumgebung mit Mockito sauber isoliert. Er prüft gezielt das gewünschte Verhalten und die Interaktion mit dem Repository. Die Assertions sind präzise und nachvollziehbar, was die Wartbarkeit und Zuverlässigkeit des Tests erhöht.
+
 
 #### 5.2.3.2 Negativ-Beispiel
+Folgender Test befindet sich in der Klasse `DefaultAddItemToShoppingListTest`
+```java
+@Test
+void addItemSuccessful() {
+    Metric metric = new VolumeMetric(10, VolumeUnit.LITER);
+    Ingredient ingredient = new Ingredient(0, metric, "Tomato", IngredientCategory.BEVERAGES);
+    Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
 
+    ShoppingList result = addItemToShoppingList.addItem(1, ingredient);
+
+    assertNotNull(result);
+    assertTrue(result.getIngredients().contains(ingredient));
+    Mockito.verify(userRepository, Mockito.times(1)).searchByID(1);
+}
+``` 
+Der Test ist nicht professionell, da das metric und ingredient Objekt manuell erstellt wird. Bei Änderungen in den entsprechenden Klassen muss auch die Testklasse angepasst werden, was nicht dem Prinzip entspricht.
 
 ## 5.3 Code Coverage
 
 
 ## 5.4 Fakes und Mocks
 
-### 5.4.1 Mock-Objekt: 
+### 5.4.1 Mock-Objekt: `DefaultUserRepository`
+In mehreren Tests wird das `DefaultUserRepository` Objekt gemockt, um die Geschäftslogik zu trennen und die Testmethoden isoliert testen zu können.
 
-### 5.4.2 Mock-Objekt: 
+```mermaid
+classDiagram
+    class DefaultChangeUserPasswordTest {
+    }
+
+    class DefaultUserRepository
+    
+
+    DefaultChangeUserPasswordTest --> DefaultUserRepository
+
+```
+Beispiel-Code:
+```java
+private DefaultUserRepository userRepository = Mockito.mock(DefaultUserRepository.class);
+private DefaultChangeUserPassword changeUserPassword = new DefaultChangeUserPassword(userRepository);
+
+@Test
+void changePasswordSuccessful() {
+    User user = new User.Builder()
+            .id(1)
+            .email(new EmailAddress("test@mail.de"))
+            .userName("name")
+            .password("oldPw")
+            .build();
+    Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
+
+    User updatedUser = changeUserPassword.changePassword(1, "newPw");
+
+    assertNotNull(updatedUser);
+    assertEquals("newPw", updatedUser.getPassword());
+    Mockito.verify(userRepository, Mockito.times(1)).searchByID(1);
+}
+```
+**Analyse und Begründung:**
+In der Testklasse `DefaultChangeUserPasswordTest` wird das Mock-Objekt `DefaultUserRepository` verwendet, um das Verhalten des echten Repositories zu simulieren, ohne auf eine echte Datenbank oder eine konkrete Implementierung zugreifen zu müssen. Das Mock-Objekt wird mit Hilfe von Mockito erstellt.
+Der Einsatz des Mock-Objekts `DefaultUserRepository` ermöglicht es, die Logik der Klasse `DefaultChangeUserPassword` isoliert, effizient und zuverlässig zu testen, was zu robusteren und wartbareren Tests führt.
+
+### 5.4.2 Mock-Objekt: `DefaultRecipeRepository`
+In mehreren Tests wird das `DefaultRecipeRepository` Objekt gemockt, um die Geschäftslogik zu trennen und die Testmethoden isoliert testen zu können.
+
+```mermaid
+classDiagram
+    class DefaultCreateRecipeTest {
+    }
+
+    class DefaultRecipeRepository
+    
+
+    DefaultCreateRecipeTest --> DefaultRecipeRepository
+
+
+```
+Beispiel-Code:
+```java
+@BeforeEach
+void setUp() {
+    recipeRepository = Mockito.mock(DefaultRecipeRepository.class);
+    userRepository = Mockito.mock(DefaultUserRepository.class);
+    defaultCreateRecipe = new DefaultCreateRecipe(recipeRepository, userRepository);
+    creator = new User.Builder().id(0).email(new EmailAddress("til@til.de")).userName("Til").password("1234").build();
+
+}
+
+@Test
+void testCreateRecipeSuccessfully() {
+    Recipe recipe = new Recipe(0, "Pasta", 4, 45, new ArrayList<ProcessStep>(), creator);
+    Mockito.when(userRepository.searchByID(creator.getId())).thenReturn(Optional.of(creator));
+    Mockito.when(recipeRepository.create(recipe)).thenReturn(recipe);
+
+    Recipe createdRecipe = defaultCreateRecipe.createRecipe(recipe);
+
+    Mockito.verify(userRepository).searchByID(creator.getId());
+    Mockito.verify(recipeRepository).create(recipe);
+    assertEquals(recipe, createdRecipe);
+}
+```
+**Analyse und Begründung:**
+In der Testklasse `DefaultCreateRecipeTest` wird das Mock-Objekt `DefaultRecipeRepository` verwendet, um das Verhalten des echten Repositories zu simulieren, ohne auf eine echte Datenbank oder eine konkrete Implementierung zugreifen zu müssen. Das Mock-Objekt wird mit Hilfe von Mockito erstellt.
+Der Einsatz des Mock-Objekts `DefaultRecipeRepository` ermöglicht es, die Logik der Klasse `DefaultCreateRecipe` isoliert, effizient und zuverlässig zu testen, was zu robusteren und wartbareren Tests führt.
 
 # 6. Domain-Driven-Design (DDD)
 ## 6.1 Ubiquitous Language
-Bei den Unterabschnitten *6.1.1* und *6.1.2* handelt es sich um Vorarbeiten, die zu der **Ubiquitous Language** in *6.1.3* geführt haben.
-### 6.1.1 Entities
+| Bezeichnung    | Bedeutung                                                    | Begründung                                                                                                |
+| -------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| User           | Nutzer, die Anwendung verwendet                              | "User" (oder "Nutzer") ist der allgemein verständliche Begriff für eine Person, die Software bedient. Es ist klar und eindeutig. |
+| Recipe         | Ein Rezept mit mehreren Schritten und Zutaten zum Kochen      | "Recipe" (oder "Rezept") ist der etablierte und allgemein bekannte Begriff für eine Kochanleitung. Es beschreibt präzise den Kerninhalt. |
+| Ingredient     | Eine Zutat, die Teil eines Rezeptes sein kann (oder ShoppingList) | "Ingredient" (oder "Zutat") ist der Standardbegriff für Bestandteile eines Rezepts. Es ist spezifisch und wird von allen Nutzern verstanden. |
+| ShoppingList   | Eine Liste an Zutaten, die eingekauft werden müssen          | "ShoppingList" (oder "Einkaufsliste") beschreibt eindeutig den Zweck, nämlich eine Liste von zu kaufenden Dingen. Im Kontext der Anwendung sind dies primär Zutaten. |           
+## 6.2 Entities - User Entity
 
+```mermaid
+classDiagram
+    class User {
+        - int id
+        - EmailAddress email
+        - String userName
+        - String password
+        - List~Recipe~ recipes
+        - ShoppingList shoppingList
+        + getId() int
+        + getEmail() EmailAddress
+        + setEmail(email: EmailAddress) void
+        + getUserName() String
+        + setUserName(userName: String) void
+        + getPassword() String
+        + setPassword(password: String) void
+        + getRecipes() List~Recipe~
+        + getShoppingList() ShoppingList
+        + addRecipe(recipe: Recipe) void
+        + toString() String
+    }
 
-### 6.1.2 Nutzer
+    class Builder {
+        - int id
+        - EmailAddress email
+        - String userName
+        - String password
+        - List~Recipe~ recipes
+        - ShoppingList shoppingList
+        + id(id: int) Builder
+        + email(email: EmailAddress) Builder
+        + userName(userName: String) Builder
+        + password(password: String) Builder
+        + recipes(recipes: List~Recipe~) Builder
+        + shoppingList(shoppingList: ShoppingList) Builder
+        + build() User
+    }
 
-### 6.1.3 Tabelle
+    class EmailAddress
+    class Recipe
+    class ShoppingList
 
-| Bezeichnung | Bedeutung                                                                               | Begründung                                                                                                                                                                                                                                                           |
-|-------------|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Policy      | eine Versicherung, die ein Kunde für ein Auto abgeschlossen hat                         | Ein Kunde schließt einen Vertrag für jede seiner Versicherungen ab (Insurance Policy). Bei einer Autoversicherung werden nur diese Art von Verträgen verwaltet, deswegen die kürzere Bezeichnung.                                                                    |
-| Ticket      | Verkehrsverstöße von Kunden für zu schnelles Fahren                                     | Bei einer einer Autoversicherung sind für die Kostenberechnung einer Policy Geschwindigkeitsüberschreitungen releveant, da dadurch das Risiko eines Schadens erhöht wird. Andere Arten von Verkehrsvergehen, wie falsches Parken, werden dabei nicht berücksichtigt. |
-| Customer    | natürliche Person, die Kunde bei der von der Anwendung verwalteten Autoversicherung ist | Kunden schließen einen Vertrag bei der Autoversicherung ab. Die Nutzer der Anwendung sind Mitarbeiter der Autoversicherung und tragen die Daten für die jeweiligen Kunden in das System ein.                                                                         |
-| Premium     | die monatlichen Kosten einer Policy, um diese aktiv zu halten                           | Im Rahmen einer Versicherung wird Premium als der monatlich zu entrichtende Betrag definiert                                                                                                                                
-## 6.2 Entities - Policy Entity
+    User o-- "1" Builder : <<static>>
+    User o--> EmailAddress
+    User o--> Recipe
+    User o--> ShoppingList
+    Builder o--> EmailAddress
+    Builder o--> Recipe
+    Builder o--> ShoppingList
 
+```
+**Beschreibung:**
+Die Klasse User beschreibt einen Nutzer der Anwendung, der mit Rezepten interagieren kann und zusätzlich eine Einkaufsliste modelliert.
 
-## 6.3 Value Objects - Premium Value Object
+**Begründung:**
+Der Einsatz eines Entities ist hier sinnvoll, weil:
 
+1. Identität: Jeder Benutzer wird durch eine eindeutige ID identifiziert, unabhängig von seinen Attributwerten.
+2. Zustandsänderung: Die Klasse erlaubt Änderungen an ihren Attributen (z.B. Rezepte hinzufügen, Passwort ändern), was typisch für Entities ist.
+3. Domänenlogik: Die Klasse kann domänenspezifische Logik enthalten, z.B. das Hinzufügen von Rezepten.
+4. Wiederverwendbarkeit: Entities sind zentrale Bausteine im Domain-Driven Design und können in verschiedenen Kontexten (z.B. Authentifizierung, Rezeptverwaltung) wiederverwendet werden.
 
-## 6.4 Aggregates - Customer Aggregate
+## 6.3 Value Objects - EmailAdress Object
+```mermaid
+classDiagram
+  class EmailAddress {
+    -final String address
+    +EmailAddress(String address)
+    +getAddress() String
+    +getDomain() String
+    -isValid(String address) boolean
+    +equals(Object o) boolean
+    +hashCode() int
+    +toString() String
+  }
+```
+**Beschreibung:**
+Die Klasse `EmailAddress` repräsentiert eine E-Mail Adresse mit der sich Nutzer in der Anwendung registrieren und anmelden können.
 
+**Begründung, warum `EmailAddress` ein Value Object ist:**
+Die Klasse EmailAddress erfüllt die Kriterien eines Value Objects aus folgenden Gründen:
+
+1. Identität basiert auf Wert: Die equals()- und hashCode()-Methoden basieren ausschließlich auf dem Wert des address-Strings. Zwei EmailAddress-Instanzen sind gleich, wenn ihre E-Mail-Adressen-Strings (nach Konvertierung in Kleinbuchstaben) identisch sind, unabhängig von ihrer Speicheradresse.
+2. Immutabilität: Das Attribut address ist final und wird im Konstruktor gesetzt. Es gibt keine Methoden, um den Zustand des Objekts nach der Erstellung zu ändern. Die Klasse selbst ist ebenfalls final, was die Immutabilität weiter unterstützt, da keine Unterklassen das Verhalten ändern können.
+3. Selbstvalidierung: Der Konstruktor stellt sicher, dass nur gültige E-Mail-Adressen (gemäß der isValid-Methode) zur Erstellung eines Objekts führen. Dies schützt die Integrität des Werts.
+4. Keine eigene ID: Das Objekt hat keine separate ID oder einen Lebenszyklus, der über den Wert seiner Attribute hinausgeht. Es repräsentiert lediglich den Wert einer E-Mail-Adresse.
+
+## 6.4 Aggregates - Recipe Aggregate
+```mermaid
+classDiagram
+    class Recipe {
+        - int id
+        - String name
+        - int portions
+        - int preparationTime
+        - List~Ingredient~ ingredients
+        - List~ProcessStep~ processSteps
+        - User creator
+        + Recipe(id: int, name: String, portions: int, preparationTime: int, processSteps: List~ProcessStep~, creator: User)
+        + getCreator() User
+        + setCreator(creator: User) void
+        + getId() int
+        + setId(id: int) void
+        + getName() String
+        + setName(name: String) void
+        + getPortions() int
+        + setPortions(portions: int) void
+        + getPreparationTime() int
+        + setPreparationTime(preparationTime: int) void
+        + getIngredients() List~Ingredient~
+        + setIngredients(ingredients: List~Ingredient~) void
+        + getProcessSteps() List~ProcessStep~
+        + setProcessSteps(processSteps: List~ProcessStep~) void
+        + toString() String
+    }
+
+    class Ingredient
+    class ProcessStep
+    class User
+
+    Recipe o--> Ingredient
+    Recipe o--> ProcessStep
+    Recipe o--> User
+
+```
+
+**Beschreibung:**
+Die Klase `Recipe` repräsentiert Rezepte mit veschiedenen Zutaten und Verarbeitungsschritte. User können diese erstellen, bearbeiten und sich diese anzeigen lassen.
+
+**Begründung:**
+Die Klasse `Recipe` kann als Aggregat betrachtet werden, wobei Recipe selbst das Aggregate Root ist:
+
+1. Identität und Wurzel: Recipe ist eine Entität, da sie eine eindeutige id besitzt und einen eigenen Lebenszyklus hat (sie kann erstellt, geändert, gelöscht werden). Sie dient als primärer Zugriffspunkt für das gesamte Konzept eines Rezepts.
+2. Grenze und Kapselung: Recipe fasst andere Objekte wie ProcessStep und Ingredient logisch zusammen. Diese Objekte sind für die Definition eines Rezepts wesentlich und bilden zusammen eine konzeptionelle Einheit. Obwohl Ingredient und User auch eigenständige Entitäten sein können, werden sie hier im Kontext des Rezepts referenziert und teilweise verwaltet (die ingredients-Liste wird im Konstruktor basierend auf den processSteps aufgebaut).
+3. Integrität und Invarianten: Das Aggregate Root (Recipe) ist dafür verantwortlich, die Konsistenz und die Geschäftsregeln (Invarianten) innerhalb seiner Grenzen sicherzustellen. Zum Beispiel stellt der Konstruktor sicher, dass die ingredients-Liste alle in den processSteps benötigten Zutaten enthält. 
+4. Transaktionskonsistenz: Operationen wie das Speichern oder Laden eines Rezepts sollten das gesamte Aggregat (Recipe mit seinen Steps und Ingredients) als atomare Einheit behandeln. Man lädt oder speichert nicht nur einen einzelnen ProcessStep losgelöst von seinem Recipe.
 
 ## 6.5 Repositories - Customer Repository
+```mermaid 
+classDiagram
+    class UserRepository {
+        <<interface>>
+        + create(user: User) User
+        + searchByID(id: int) Optional~User~
+        + searchByMail(emailAddress: EmailAddress) Optional~User~
+        + getActiveUser() User
+        + setActiveUser(newActiveUser: User) User
+        + logoutActiveUser() void
+    }
+
+    class User
+    class EmailAddress
+
+    UserRepository ..> User
+    UserRepository ..> EmailAddress
+
+```
+**Beschreibung:**
+Das Repository `UserRepository` verwaltet das Speichern von allen User Objekten und fasst die logik dafür zusammen.
+
+**Begründung:** 
+1. Trennung von Domäne und Persistenz: Das Repository abstrahiert die Details der Datenhaltung (z.B. Datenbank, In-Memory, Datei) und bietet eine domänenspezifische Schnittstelle für den Zugriff auf Benutzerobjekte.
+2. Zentrale Zugriffsstelle: Es dient als zentrale Anlaufstelle für das Laden, Speichern und Suchen von Benutzern, ohne dass die Domänenschicht wissen muss, wie und wo die Daten gespeichert sind.
+3. Kapselung der Sammlung: Das Repository verhält sich wie eine Sammlung von User-Objekten, auf die über domänenspezifische Methoden zugegriffen werden kann (z.B. Suche nach ID oder E-Mail).
+4. Förderung von Testbarkeit und Flexibilität: Durch die Verwendung eines Interfaces kann die Implementierung leicht ausgetauscht oder gemockt werden, was die Testbarkeit und Flexibilität erhöht.
 
 
 # 7. Refactoring
 ## 7.1 Code Smells
-### 7.1.1 Long Method
 
+### 7.1.1 Long Method
+Die Methode befindet sich in der Klasse `DefaultRemoveItemFromShoppingList`. Sie ist zu lang und hat zu viele Verantwortlichkeiten.
+```java
+@Override
+public ShoppingList removeItem(int userId, String name) {
+    Optional<User> user = userRepository.searchByID(userId);
+    if(!user.isPresent()) {
+        throw new UserNotFoundException("User not found");
+    }
+    ShoppingList shoppingList = user.get().getShoppingList();
+    List<Ingredient> ingredientList = shoppingList.getIngredients();
+    boolean removed = ingredientList.removeIf(ingredient -> ingredient.getName().equals(name));
+    if(!removed) {
+        throw new IngredientNotFoundException("Ingredient " + name + " not found!");
+    }
+    shoppingList.setIngredients(ingredientList);
+
+    return shoppingList;
+
+}
+```
+
+Mögliche Lösung:
+```java
+@Override
+public ShoppingList removeItem(int userId, String name) {
+    User user = findUserOrThrow(userId);
+    ShoppingList shoppingList = user.getShoppingList();
+    removeIngredientOrThrow(shoppingList, name);
+    return shoppingList;
+}
+
+private User findUserOrThrow(int userId) {
+    return userRepository.searchByID(userId)
+        .orElseThrow(() -> new UserNotFoundException("User not found"));
+}
+
+private void removeIngredientOrThrow(ShoppingList shoppingList, String name) {
+    List<Ingredient> ingredientList = shoppingList.getIngredients();
+    boolean removed = ingredientList.removeIf(ingredient -> ingredient.getName().equals(name));
+    if (!removed) {
+        throw new IngredientNotFoundException("Ingredient " + name + " not found!");
+    }
+    shoppingList.setIngredients(ingredientList);
+}
+
+```
+
+Vorteile der Lösung:
+1. Kürzere Hauptmethode: Die Methode ist jetzt nur noch 3 Zeilen lang.
+2. Bessere Lesbarkeit: Die einzelnen Schritte sind klar benannt.
+3. Wiederverwendbarkeit: Die Hilfsmethoden können auch an anderen Stellen genutzt werden.
+4. Einfacheres Testen: Einzelne Schritte lassen sich separat testen.
 
 
 ### 7.1.2 Duplicated Code
+Die Methoden `addItem` in der Klasse `DefaultAddItemToShoppingList` und `changeName` in der Klasse `DefaultChangeUserName` haben die gleiche Logik, um einen User zu finden.
+```java
+@Override
+public ShoppingList addItem(int userId, Ingredient ingredient) {
+    Optional<User> user = userRepository.searchByID(userId);
+    if(!user.isPresent()) {
+        throw new IllegalArgumentException("User not found");
+    }
+    user.get().getShoppingList().getIngredients().add(ingredient);
+    return user.get().getShoppingList();
+}
+```
 
+```java
+@Override
+public User changeName(int userId, String userName) {
+    Optional<User> user = userRepository.searchByID(userId);
+    if(!user.isPresent()) {
+        throw new IllegalArgumentException("User not found");
+    }
+    user.get().setUserName(userName);
+
+    return user.get();
+}
+```
+Mögliche Lösung: Extrahieren der Logik in eine statische Hilfsmethode:
+```java
+public class UserHelper {
+    public static User findUserOrThrow(UserRepository userRepository, int userId) {
+        return userRepository.searchByID(userId)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+}
+```
+Die eigentlichen Methoden können dann folgendermaßen angepasst werden:
+```java
+@Override
+public ShoppingList addItem(int userId, Ingredient ingredient) {
+    User user = UserHelper.findUserOrThrow(userRepository, userId);
+    user.getShoppingList().getIngredients().add(ingredient);
+    return user.getShoppingList();
+}
+
+@Override
+public User changeName(int userId, String userName) {
+    User user = UserHelper.findUserOrThrow(userRepository, userId);
+    user.setUserName(userName);
+    return user;
+}
+```
+Vorteile:
+
+1. Die Logik ist zentral in einer statischen Hilfsmethode gekapselt.
+2. Kein duplizierter Code mehr.
+3. Die Methode kann überall wiederverwendet werden.
 
 ## 7.2 Refactorings
 
-### 7.2.1 Replace Conditional with Polymorphism
+### 7.2.1 Extract Method 
+Commit hash: 9a8290784657cff7dd71b914df5aaff82baa3fb4
 
+UML vorher:
+```mermaid 
+classDiagram
+    class ConsoleAdapter {
+        + start()
+    }
+```
+UML nachher:
+```mermaid 
+classDiagram
+    class ConsoleAdapter {
+        + start()
+        + menu()
+    }
+```
+**Begründung:**
+Das Refactoring wurde angewendet, um die Lesbarkeit und Wartbarkeit des Codes zu verbessern. Durch das Extrahieren der Logik für das starten des Menüs in eine separate Methode handleChoice wird die start-Methode verkürzt und die Verantwortlichkeiten genau getrennt.
 
-### 7.2.2 Extract Method
+### 7.2.2 Rename Method
+Commit hash: d6524552fffc0b07cbe507c0b10d427ff8757675
 
+UML vorher:
+```mermaid 
+classDiagram
+    class ConsoleAdapter {
+        + start()
+        + menu()
+    }
+```
+UML nachher:
+```mermaid 
+classDiagram
+    class ConsoleAdapter {
+        + start()
+        + handleStartUpMenu()
+    }
+```
+**Begründung:**
+Das Refactoring wurde angewendet, um die Lesbarkeit zu verbessern. Der Methodenname `menu` sagt wenig bis nichts über die Funktionalität der Methode aus, wohingegen `handleStartUpMenu` genau beschreibt, was die Methode macht.
 
 # 8. Design Patterns
 ## 8.1 Strategy Pattern
