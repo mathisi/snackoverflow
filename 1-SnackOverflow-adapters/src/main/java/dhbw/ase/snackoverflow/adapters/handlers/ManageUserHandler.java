@@ -1,5 +1,6 @@
 package dhbw.ase.snackoverflow.adapters.handlers;
 
+import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
 import dhbw.ase.snackoverflow.domain.entities.User;
 import dhbw.ase.snackoverflow.domain.usecases.ChangeUserName;
 import dhbw.ase.snackoverflow.domain.usecases.ChangeUserPassword;
@@ -37,7 +38,7 @@ public class ManageUserHandler {
         while (running) {
             try {
                 printMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
@@ -86,16 +87,6 @@ public class ManageUserHandler {
     }
     private User getActiveUser() throws Exception {
         return this.getActiveUser.getActiveUser();
-    }
-    private int getIntInput(String output) {
-        while (true) {
-            try {
-                System.out.print(output);
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
     }
     private String getStringInput(String prompt) {
         System.out.print(prompt);

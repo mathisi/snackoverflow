@@ -3,6 +3,9 @@ package dhbw.ase.snackoverflow.adapters;
 import dhbw.ase.snackoverflow.adapters.handlers.ShoppingListHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.ManageUserHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.RecipeHandler;
+import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
+import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
+import dhbw.ase.snackoverflow.application.strategies.SearchByNameStrategy;
 import dhbw.ase.snackoverflow.domain.entities.User;
 import dhbw.ase.snackoverflow.domain.usecases.*;
 import dhbw.ase.snackoverflow.domain.valueobjects.*;
@@ -23,7 +26,7 @@ public class ConsoleAdapter {
     public ConsoleAdapter(CreateUser createUser, ChangeUserName changeUserName, LoginUser loginUser,
             GetActiveUser getActiveUser, LogoutUser logoutUser, ChangeUserPassword changeUserPassword,
             AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList,
-            FindRecipe findRecipe, CreateRecipe createRecipe) {
+             CreateRecipe createRecipe, RecipeFinder recipeFinder) {
         this.createUser = createUser;
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;
@@ -31,10 +34,13 @@ public class ConsoleAdapter {
         this.shoppingListHandler = new ShoppingListHandler(this.scanner, getActiveUser, addItemToShoppingList,
                 removeItemFromShoppingList);
         this.manageUserHandler = new ManageUserHandler(this.scanner, getActiveUser, changeUserPassword, changeUserName);
-        this.recipeHandler = new RecipeHandler(this.scanner, findRecipe, createRecipe, getActiveUser);
+        this.recipeHandler = new RecipeHandler(this.scanner, recipeFinder, createRecipe, getActiveUser);
     }
 
     public void start() {
+        this.handleStartUpMenu();
+    }
+    private void handleStartUpMenu() {
         Map<Integer, Supplier<Boolean>> menuActions = new HashMap<>();
         menuActions.put(1, () -> {
             createUser();
@@ -50,7 +56,7 @@ public class ConsoleAdapter {
         while (running) {
             try {
                 printStartupMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
@@ -86,7 +92,7 @@ public class ConsoleAdapter {
         while (running) {
             try {
                 printLoggedInMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
                 } else {
@@ -123,7 +129,13 @@ public class ConsoleAdapter {
             EmailAddress emailAddress = new EmailAddress(getStringInput("Enter email adress: "));
             String userName = getStringInput("Enter username: ");
             String password = getStringInput("Enter password: ");
-            User newUser = new User(0, emailAddress, userName, password);
+
+            User newUser = new User.Builder()
+                    .id(0)
+                    .email(emailAddress)
+                    .userName(userName)
+                    .password(password)
+                    .build();
             User createdUser = this.createUser.createUser(newUser);
             System.out.println("User created: " + createdUser.toString());
         } catch (Exception e) {
@@ -147,16 +159,7 @@ public class ConsoleAdapter {
         System.out.println("10. Log out");
     }
 
-    private int getIntInput(String output) {
-        while (true) {
-            try {
-                System.out.print(output);
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
-    }
+
 
     private String getStringInput(String prompt) {
         System.out.print(prompt);

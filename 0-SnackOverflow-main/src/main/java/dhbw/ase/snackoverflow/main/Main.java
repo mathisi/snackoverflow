@@ -3,15 +3,9 @@ package dhbw.ase.snackoverflow.main;
 import dhbw.ase.snackoverflow.adapters.ConsoleAdapter;
 import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
 import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
+import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
+import dhbw.ase.snackoverflow.application.strategies.SearchByNameStrategy;
 import dhbw.ase.snackoverflow.application.usecases.*;
-import dhbw.ase.snackoverflow.domain.TestDomain;
-import dhbw.ase.snackoverflow.domain.entities.Ingredient;
-import dhbw.ase.snackoverflow.domain.entities.IngredientCategory;
-import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.valueobjects.EmailAddress;
-import dhbw.ase.snackoverflow.domain.valueobjects.VolumeMetric;
-import dhbw.ase.snackoverflow.domain.valueobjects.VolumeUnit;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,12 +22,14 @@ public class Main {
         DefaultAddItemToShoppingList addItemToShoppingList = new DefaultAddItemToShoppingList(userRepository);
         DefaultRemoveItemFromShoppingList removeItemFromShoppingList = new DefaultRemoveItemFromShoppingList(
                 userRepository);
-        DefaultFindRecipe findRecipe = new DefaultFindRecipe(recipeRepository, userRepository);
+
         DefaultCreateRecipe createRecipe = new DefaultCreateRecipe(recipeRepository, userRepository);
 
+        RecipeFinder recipeFinder = new RecipeFinder(new SearchByNameStrategy(recipeRepository), recipeRepository, userRepository);
+
         ConsoleAdapter consoleAdapter = new ConsoleAdapter(createUser, changeUserName, loginUser, getActiveUser,
-                logoutUser, changeUserPassword, addItemToShoppingList, removeItemFromShoppingList, findRecipe,
-                createRecipe);
+                logoutUser, changeUserPassword, addItemToShoppingList, removeItemFromShoppingList,
+                createRecipe, recipeFinder);
 
         consoleAdapter.start();
 

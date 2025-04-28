@@ -4,6 +4,7 @@ import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
 import dhbw.ase.snackoverflow.domain.entities.User;
+import dhbw.ase.snackoverflow.domain.repositories.UserRepository;
 import dhbw.ase.snackoverflow.domain.usecases.AddItemToShoppingList;
 
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.Optional;
 
 public class DefaultAddItemToShoppingList implements AddItemToShoppingList {
 
-    private final DefaultUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public DefaultAddItemToShoppingList(DefaultUserRepository userRepository) {
+    public DefaultAddItemToShoppingList(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

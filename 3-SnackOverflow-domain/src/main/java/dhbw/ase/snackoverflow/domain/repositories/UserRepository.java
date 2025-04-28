@@ -13,9 +13,6 @@ public interface UserRepository {
     User create(User user);
     Optional<User> searchByID(int id);
     Optional<User> searchByMail(EmailAddress emailAddress);
-    List<User> searchAll();
-    void delete(int id);
-    User findByRecipe(Recipe recipe);
 
     User getActiveUser();
     User setActiveUser(User newActiveUser) throws Exception;

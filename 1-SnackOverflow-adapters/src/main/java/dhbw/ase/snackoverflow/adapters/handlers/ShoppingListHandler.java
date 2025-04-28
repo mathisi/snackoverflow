@@ -1,5 +1,6 @@
 package dhbw.ase.snackoverflow.adapters.handlers;
 
+import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
 import dhbw.ase.snackoverflow.domain.entities.Ingredient;
 import dhbw.ase.snackoverflow.domain.entities.IngredientCategory;
 import dhbw.ase.snackoverflow.domain.entities.ShoppingList;
@@ -47,7 +48,7 @@ public class ShoppingListHandler {
         while (running) {
             try {
                 printMenu();
-                int choice = getIntInput("Choose an option: ");
+                int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
                 if (menuActions.containsKey(choice)) {
                     running = menuActions.get(choice).get();
@@ -152,7 +153,7 @@ public class ShoppingListHandler {
 
         // Get user selection
         while (true) {
-            int choice = getIntInput("Choose an option: ");
+            int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
             if (categoryMap.containsKey(choice)) {
                 return categoryMap.get(choice);
@@ -190,7 +191,7 @@ public class ShoppingListHandler {
         unitMap.forEach((key, unit) -> System.out.println(key + ": " + unit));
 
         while (true) {
-            int choice = getIntInput("Choose an option: ");
+            int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 
             if (unitMap.containsKey(choice)) {
                 Object selectedUnit = unitMap.get(choice);
@@ -206,16 +207,7 @@ public class ShoppingListHandler {
         return this.getActiveUser.getActiveUser();
     }
 
-    private int getIntInput(String output) {
-        while (true) {
-            try {
-                System.out.print(output);
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
-            }
-        }
-    }
+
 
     private String getStringInput(String prompt) {
         System.out.print(prompt);

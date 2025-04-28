@@ -16,7 +16,8 @@ public class DefaultChangeUserNameTest {
 
     @Test
     void changeNameSuccessful() {
-        User user = new User(1, new EmailAddress("test@mail.de"), "OldName", "pw");
+        User user = new User.Builder().id(1).email(new EmailAddress("test@mail.de")).userName("OldName").password("pw").build();
+
         Mockito.when(userRepository.searchByID(1)).thenReturn(Optional.of(user));
 
         User updatedUser = changeUserName.changeName(1, "NewName");
