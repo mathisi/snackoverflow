@@ -1,11 +1,14 @@
 package dhbw.ase.snackoverflow.main;
 
 import dhbw.ase.snackoverflow.adapters.ConsoleAdapter;
-import dhbw.ase.snackoverflow.application.repositories.DefaultRecipeRepository;
-import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
-import dhbw.ase.snackoverflow.application.strategies.SearchByNameStrategy;
-import dhbw.ase.snackoverflow.application.usecases.*;
+import dhbw.ase.snackoverflow.application.recipes.DefaultRecipeRepository;
+import dhbw.ase.snackoverflow.application.recipes.usecases.DefaultCreateRecipe;
+import dhbw.ase.snackoverflow.application.shoppinglists.usecases.DefaultAddItemToShoppingList;
+import dhbw.ase.snackoverflow.application.shoppinglists.usecases.DefaultRemoveItemFromShoppingList;
+import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
+import dhbw.ase.snackoverflow.application.recipes.strategies.RecipeFinder;
+import dhbw.ase.snackoverflow.application.recipes.strategies.SearchByNameStrategy;
+import dhbw.ase.snackoverflow.application.users.usecases.*;
 
 public class Main {
     public static void main(String[] args) {

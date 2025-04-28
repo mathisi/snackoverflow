@@ -4,11 +4,12 @@ import dhbw.ase.snackoverflow.adapters.handlers.ShoppingListHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.ManageUserHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.RecipeHandler;
 import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
-import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
-import dhbw.ase.snackoverflow.application.strategies.SearchByNameStrategy;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.usecases.*;
-import dhbw.ase.snackoverflow.domain.valueobjects.*;
+import dhbw.ase.snackoverflow.application.recipes.strategies.RecipeFinder;
+import dhbw.ase.snackoverflow.domain.recipes.usecases.CreateRecipe;
+import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.AddItemToShoppingList;
+import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.RemoveItemFromShoppingList;
+import dhbw.ase.snackoverflow.domain.users.*;
+import dhbw.ase.snackoverflow.domain.users.usecases.*;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -24,9 +25,9 @@ public class ConsoleAdapter {
     private final RecipeHandler recipeHandler;
 
     public ConsoleAdapter(CreateUser createUser, ChangeUserName changeUserName, LoginUser loginUser,
-            GetActiveUser getActiveUser, LogoutUser logoutUser, ChangeUserPassword changeUserPassword,
-            AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList,
-             CreateRecipe createRecipe, RecipeFinder recipeFinder) {
+                          GetActiveUser getActiveUser, LogoutUser logoutUser, ChangeUserPassword changeUserPassword,
+                          AddItemToShoppingList addItemToShoppingList, RemoveItemFromShoppingList removeItemFromShoppingList,
+                          CreateRecipe createRecipe, RecipeFinder recipeFinder) {
         this.createUser = createUser;
         this.loginUser = loginUser;
         this.logoutUser = logoutUser;

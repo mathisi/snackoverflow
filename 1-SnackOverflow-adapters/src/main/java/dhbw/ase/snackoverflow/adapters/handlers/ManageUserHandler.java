@@ -1,10 +1,10 @@
 package dhbw.ase.snackoverflow.adapters.handlers;
 
 import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
-import dhbw.ase.snackoverflow.domain.entities.User;
-import dhbw.ase.snackoverflow.domain.usecases.ChangeUserName;
-import dhbw.ase.snackoverflow.domain.usecases.ChangeUserPassword;
-import dhbw.ase.snackoverflow.domain.usecases.GetActiveUser;
+import dhbw.ase.snackoverflow.domain.users.User;
+import dhbw.ase.snackoverflow.domain.users.usecases.ChangeUserName;
+import dhbw.ase.snackoverflow.domain.users.usecases.ChangeUserPassword;
+import dhbw.ase.snackoverflow.domain.users.usecases.GetActiveUser;
 
 import java.util.HashMap;
 import java.util.Map;
