@@ -1,7 +1,7 @@
 
 <div align="center">
 
-# <span style="font-size:2.5em">Programmentwurf</span>
+# <span style="font-size:2.3em">Programmentwurf</span>
 
 ## <span style="font-size:2em">Snackoverflow</span>
 
@@ -65,7 +65,7 @@
   - [6.2 Entities - User Entity](#62-entities---user-entity)
   - [6.3 Value Objects - EmailAdress Object](#63-value-objects---emailadress-object)
   - [6.4 Aggregates - Recipe Aggregate](#64-aggregates---recipe-aggregate)
-  - [6.5 Repositories - Customer Repository](#65-repositories---customer-repository)
+  - [6.5 Repositories - User Repository](#65-repositories---user-repository)
 - [7. Refactoring](#7-refactoring)
   - [7.1 Code Smells](#71-code-smells)
   - [7.2 Refactorings](#72-refactorings)
