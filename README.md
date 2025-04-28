@@ -8,7 +8,7 @@
 <br><br>
 
 <span style="font-size:1.5em"><b>Name:</b> Weber, Til und Imming, Mathis</span>  
-<span style="font-size:1.5em"><b>Matrikelnummer:</b> 7456543 und </span>  
+<span style="font-size:1.5em"><b>Matrikelnummer:</b> 7456543 und 4948069</span>  
 
 <br><br>
 
@@ -530,7 +530,7 @@ classDiagram
 ```
 
 
-Die beiden Interfaces `LoginUser` und `LogoutUser` erf+llen das ISP, da beide nach Funktionalität aufgeteilt sind. Daher müssen Klassen, die die Interfaces konsumieren, keine unnötigen Funktionen implementieren.
+Die beiden Interfaces `LoginUser` und `LogoutUser` erfüllen das ISP, da beide nach Funktionalität aufgeteilt sind. Daher müssen Klassen, die die Interfaces konsumieren, keine unnötigen Funktionen implementieren.
 
 
 ### 3.3.2 Negativ-Beispiel: `RecipeRepository`
@@ -755,7 +755,7 @@ public class InputUtils {
 int choice = InputUtils.getIntInput("Choose an option: ", scanner);
 ```
 Begründung und Auswirkung:
-Die Logik zum abfangen von Konsolen Input ist in allen Klassen gleich. Sollte im Laufe der Entwicklung bei der Logik Änderungen vorgenommen werden müssen, müssen diese jetzt nur noch zentral in der statischen Methode verändert werden, und nicht mehr in jeder Klasse einzelnd.
+Die Logik zum Abfangen von Konsolen Input ist in allen Klassen gleich. Sollte im Laufe der Entwicklung bei der Logik Änderungen vorgenommen werden müssen, müssen diese jetzt nur noch zentral in der statischen Methode verändert werden, und nicht mehr in jeder Klasse einzelnd.
 
 # 5. Unit Tests
 ## 5.1 Zehn Unit Tests - Tabelle
@@ -769,7 +769,7 @@ Die Logik zum abfangen von Konsolen Input ist in allen Klassen gleich. Sollte im
 | DefaultLoginUserTest                  | testLoginSuccessful          | Testet, ob ein Benutzer mit korrekten Zugangsdaten erfolgreich eingeloggt wird und der zurückgegebene Benutzer dem erwarteten Benutzer entspricht.
 |                                       | testLoginUserNotFound        | Testet, ob beim Login-Versuch mit einer nicht existierenden E-Mail-Adresse eine `UserNotFoundException` mit der korrekten Fehlermeldung geworfen wird.
 |                                       | testLoginInvalidPassword     | Testet, ob beim Login-Versuch mit falschem Passwort eine `InvalidPasswordException` mit der korrekten Fehlermeldung geworfen wird.
-| DefaultRemoveItemFromShoppingListTest | removeItemSuccessful         | Testet, ob ein vorhandenes Ingredient erfolgreich aus der Einkaufsliste eines existierenden Benutzers entfernt wird.
+| DefaultRemoveItem-FromShoppingListTest | removeItemSuccessful         | Testet, ob ein vorhandenes Ingredient erfolgreich aus der Einkaufsliste eines existierenden Benutzers entfernt wird.
 |                                       | removeItemUserNotFound       | Testet, ob beim Versuch, ein Ingredient aus der Einkaufsliste eines nicht existierenden Benutzers zu entfernen, eine `UserNotFoundException` mit der korrekten Fehlermeldung geworfen wird.
 |                                       | removeItemIngredientNotFound | Testet, ob beim Versuch, ein nicht vorhandenes Ingredient aus der Einkaufsliste zu entfernen, eine `IngredientNotFoundException` mit der korrekten Fehlermeldung geworfen wird.
 
@@ -1113,7 +1113,7 @@ Die Klasse `Recipe` kann als Aggregat betrachtet werden, wobei Recipe selbst das
 3. Integrität und Invarianten: Das Aggregate Root (Recipe) ist dafür verantwortlich, die Konsistenz und die Geschäftsregeln (Invarianten) innerhalb seiner Grenzen sicherzustellen. Zum Beispiel stellt der Konstruktor sicher, dass die ingredients-Liste alle in den processSteps benötigten Zutaten enthält. 
 4. Transaktionskonsistenz: Operationen wie das Speichern oder Laden eines Rezepts sollten das gesamte Aggregat (Recipe mit seinen Steps und Ingredients) als atomare Einheit behandeln. Man lädt oder speichert nicht nur einen einzelnen ProcessStep losgelöst von seinem Recipe.
 
-## 6.5 Repositories - Customer Repository
+## 6.5 Repositories - User Repository
 ```mermaid 
 classDiagram
     class UserRepository {
@@ -1134,7 +1134,7 @@ classDiagram
 
 ```
 **Beschreibung:**
-Das Repository `UserRepository` verwaltet das Speichern von allen User Objekten und fasst die logik dafür zusammen.
+Das Repository `UserRepository` verwaltet das Speichern von allen User Objekten und fasst die Logik dafür zusammen.
 
 **Begründung:** 
 1. Trennung von Domäne und Persistenz: Das Repository abstrahiert die Details der Datenhaltung (z.B. Datenbank, In-Memory, Datei) und bietet eine domänenspezifische Schnittstelle für den Zugriff auf Benutzerobjekte.
