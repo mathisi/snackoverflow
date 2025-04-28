@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow.application.usecases;
+package dhbw.ase.snackoverflow.application.recipes.usecases;
 
 import java.util.List;
 import java.util.Optional;

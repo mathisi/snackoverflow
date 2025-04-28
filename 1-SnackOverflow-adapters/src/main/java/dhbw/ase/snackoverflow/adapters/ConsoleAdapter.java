@@ -4,7 +4,7 @@ import dhbw.ase.snackoverflow.adapters.handlers.ShoppingListHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.ManageUserHandler;
 import dhbw.ase.snackoverflow.adapters.handlers.RecipeHandler;
 import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
-import dhbw.ase.snackoverflow.application.strategies.RecipeFinder;
+import dhbw.ase.snackoverflow.application.recipes.strategies.RecipeFinder;
 import dhbw.ase.snackoverflow.domain.recipes.usecases.CreateRecipe;
 import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.AddItemToShoppingList;
 import dhbw.ase.snackoverflow.domain.shoppingllists.usecases.RemoveItemFromShoppingList;

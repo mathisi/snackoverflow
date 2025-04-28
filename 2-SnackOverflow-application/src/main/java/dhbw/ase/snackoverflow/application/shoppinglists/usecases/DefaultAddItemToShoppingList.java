@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow.application.usecases;
+package dhbw.ase.snackoverflow.application.shoppinglists.usecases;
 
 import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
 import dhbw.ase.snackoverflow.domain.shoppingllists.ShoppingList;

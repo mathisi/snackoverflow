@@ -1,7 +1,7 @@
 package dhbw.ase.snackoverflow;
 
-import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.application.usecases.DefaultAddItemToShoppingList;
+import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
+import dhbw.ase.snackoverflow.application.shoppinglists.usecases.DefaultAddItemToShoppingList;
 import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
 import dhbw.ase.snackoverflow.domain.ingredients.IngredientCategory;
 import dhbw.ase.snackoverflow.domain.shoppingllists.ShoppingList;

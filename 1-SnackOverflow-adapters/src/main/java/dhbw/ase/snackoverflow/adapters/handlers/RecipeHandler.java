@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import dhbw.ase.snackoverflow.adapters.utils.InputUtils;
-import dhbw.ase.snackoverflow.application.strategies.*;
+import dhbw.ase.snackoverflow.application.recipes.strategies.*;
 import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
 import dhbw.ase.snackoverflow.domain.ingredients.IngredientCategory;
 import dhbw.ase.snackoverflow.domain.recipes.ProcessStep;

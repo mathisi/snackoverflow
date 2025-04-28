@@ -1,7 +1,7 @@
 package dhbw.ase.snackoverflow;
 
-import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
-import dhbw.ase.snackoverflow.application.usecases.DefaultChangeUserPassword;
+import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
+import dhbw.ase.snackoverflow.application.users.usecases.DefaultChangeUserPassword;
 import dhbw.ase.snackoverflow.domain.users.User;
 import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;
 import dhbw.ase.snackoverflow.domain.users.EmailAddress;

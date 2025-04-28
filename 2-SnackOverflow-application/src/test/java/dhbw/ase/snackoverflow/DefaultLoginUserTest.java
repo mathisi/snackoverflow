@@ -1,6 +1,6 @@
 package dhbw.ase.snackoverflow;
 
-import dhbw.ase.snackoverflow.application.usecases.DefaultLoginUser;
+import dhbw.ase.snackoverflow.application.users.usecases.DefaultLoginUser;
 import dhbw.ase.snackoverflow.domain.users.User;
 import dhbw.ase.snackoverflow.domain.users.InvalidPasswordException;
 import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;

@@ -1,6 +1,6 @@
-package dhbw.ase.snackoverflow.application.usecases;
+package dhbw.ase.snackoverflow.application.users.usecases;
 
-import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
+import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
 import dhbw.ase.snackoverflow.domain.users.User;
 import dhbw.ase.snackoverflow.domain.users.usecases.ChangeUserName;
 

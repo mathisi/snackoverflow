@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow.application.strategies;
+package dhbw.ase.snackoverflow.application.recipes.strategies;
 
 import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
 import dhbw.ase.snackoverflow.domain.users.User;

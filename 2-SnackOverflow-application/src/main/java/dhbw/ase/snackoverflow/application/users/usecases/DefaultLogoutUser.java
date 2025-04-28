@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow.application.usecases;
+package dhbw.ase.snackoverflow.application.users.usecases;
 
 import dhbw.ase.snackoverflow.domain.users.UserRepository;
 import dhbw.ase.snackoverflow.domain.users.usecases.LogoutUser;

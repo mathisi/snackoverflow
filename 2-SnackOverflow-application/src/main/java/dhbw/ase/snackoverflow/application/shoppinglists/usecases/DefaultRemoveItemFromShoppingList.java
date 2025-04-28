@@ -1,6 +1,6 @@
-package dhbw.ase.snackoverflow.application.usecases;
+package dhbw.ase.snackoverflow.application.shoppinglists.usecases;
 
-import dhbw.ase.snackoverflow.application.repositories.DefaultUserRepository;
+import dhbw.ase.snackoverflow.application.users.DefaultUserRepository;
 import dhbw.ase.snackoverflow.domain.ingredients.Ingredient;
 import dhbw.ase.snackoverflow.domain.shoppingllists.ShoppingList;
 import dhbw.ase.snackoverflow.domain.users.User;

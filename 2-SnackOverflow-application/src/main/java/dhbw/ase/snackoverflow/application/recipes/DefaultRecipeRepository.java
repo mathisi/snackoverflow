@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow.application.repositories;
+package dhbw.ase.snackoverflow.application.recipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

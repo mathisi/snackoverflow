@@ -1,4 +1,4 @@
-package dhbw.ase.snackoverflow.application.repositories;
+package dhbw.ase.snackoverflow.application.users;
 
 import dhbw.ase.snackoverflow.domain.users.User;
 import dhbw.ase.snackoverflow.domain.users.UserNotFoundException;
